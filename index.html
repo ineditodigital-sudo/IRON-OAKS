@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" href="https://imagenes.inedito.digital/IRONOAK%20POWER/FAVICON-IRONOAK_1.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Iron Oak Power | Premium Solar Infrastructure</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <!-- Noise Overlay -->
+    <svg style="display: none;">
+      <filter id="noise">
+        <feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" />
+        <feColorMatrix type="saturate" values="0" />
+      </filter>
+    </svg>
+    <div class="noise-overlay" style="filter: url(#noise);"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
