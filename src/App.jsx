@@ -20,6 +20,11 @@ function App() {
   const [showCancellation, setShowCancellation] = useState(false);
 
   useEffect(() => {
+    // Force scroll to top on load
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     // Global GSAP Context
     let ctx = gsap.context(() => {
       // Global section reveals

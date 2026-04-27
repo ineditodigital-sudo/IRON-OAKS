@@ -12,13 +12,29 @@ export default function Services() {
   const containerRef = useRef(null);
   useEffect(() => {
     let ctx = gsap.context(() => {
-      gsap.from(".service-card", {
+      // Header Animation
+      gsap.from(".services-header > *", {
+        y: 40,
         opacity: 0,
         duration: 1,
-        stagger: 0.15,
-        ease: "power2.out",
+        stagger: 0.1,
+        ease: "power3.out",
         scrollTrigger: {
-          trigger: containerRef.current,
+          trigger: ".services-header",
+          start: "top 85%",
+        }
+      });
+
+      // Cards Animation
+      gsap.from(".service-card", {
+        y: 80,
+        scale: 0.95,
+        opacity: 0,
+        duration: 1.2,
+        stagger: 0.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: ".services-grid",
           start: "top 85%",
           toggleActions: "play none none reverse"
         }
@@ -53,7 +69,7 @@ export default function Services() {
     <section id="services" ref={containerRef} className="bg-bg text-primary pt-24 pb-20">
       <div className="container mx-auto px-6 md:px-12">
         {/* Introduction Header */}
-        <div className="max-w-5xl mb-16">
+        <div className="services-header max-w-5xl mb-16">
           <span className="text-accent uppercase tracking-[0.4em] text-xs font-bold block mb-4">Our Services</span>
           <h2 className="text-4xl md:text-6xl font-light leading-[1.1] mb-8 text-primary uppercase">
             Powering Your <br />
@@ -65,7 +81,7 @@ export default function Services() {
         </div>
 
         {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
+        <div className="services-grid grid grid-cols-1 md:grid-cols-3 gap-10 items-start">
           {services.map((service, index) => (
             <div
               key={index}

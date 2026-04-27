@@ -71,10 +71,10 @@ export default function Footer({ onPrivacyClick, onTermsClick, onCancellationCli
             © 2026 Iron Oak Power. All rights reserved. Built to last.
           </div>
           
-          <div className="flex flex-wrap gap-8 text-[10px] text-white/40 uppercase font-bold tracking-widest">
-            <button onClick={onPrivacyClick} className="hover:text-accent cursor-pointer transition-colors">Privacy Policy</button>
-            <button onClick={onTermsClick} className="hover:text-accent cursor-pointer transition-colors">Terms of Service</button>
-            <button onClick={onCancellationClick} className="hover:text-accent cursor-pointer transition-colors">Cancellation Policy</button>
+          <div className="grid grid-cols-3 gap-2 md:flex md:gap-8 text-[8px] sm:text-[10px] text-white/40 uppercase font-bold tracking-widest text-center">
+            <button onClick={onPrivacyClick} className="hover:text-accent cursor-pointer transition-colors whitespace-nowrap">Privacy Policy</button>
+            <button onClick={onTermsClick} className="hover:text-accent cursor-pointer transition-colors whitespace-nowrap">Terms of Service</button>
+            <button onClick={onCancellationClick} className="hover:text-accent cursor-pointer transition-colors whitespace-nowrap">Cancellation Policy</button>
           </div>
         </div>
       </div>

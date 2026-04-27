@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
-import { ArrowRight, Calculator, CheckCircle2, RefreshCcw } from 'lucide-react';
+import { ArrowRight, Calculator, CheckCircle2, RefreshCcw, X, Zap } from 'lucide-react';
 
 export default function SolarCalculator() {
+  const [isStarted, setIsStarted] = useState(false);
   const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({
     bill: '',
@@ -14,6 +15,13 @@ export default function SolarCalculator() {
   
   const formRef = useRef(null);
   const stepRef = useRef(null);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    if (isStarted && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [step, isStarted]);
 
   const steps = [
     {
@@ -47,6 +55,16 @@ export default function SolarCalculator() {
     }
   ];
 
+  const handleStart = () => {
+    setIsStarted(true);
+    // Optional: Request browser fullscreen (user must trigger this)
+    try {
+      if (document.documentElement.requestFullscreen) {
+        // document.documentElement.requestFullscreen(); // Disabled by default for better UX, but can be enabled if user insists
+      }
+    } catch (e) { console.log(e); }
+  };
+
   const handleNext = () => {
     const currentStep = steps[step];
     if (currentStep.required && !formData[currentStep.id]) {
@@ -69,10 +87,24 @@ export default function SolarCalculator() {
     }
   };
 
+  const handleBack = () => {
+    if (step > 0) {
+      gsap.to(stepRef.current, {
+        opacity: 0,
+        y: 20,
+        duration: 0.3,
+        onComplete: () => {
+          setStep(step - 1);
+          gsap.fromTo(stepRef.current, { opacity: 0, y: -20 }, { opacity: 1, y: 0, duration: 0.3 });
+        }
+      });
+    }
+  };
+
   const calculateResults = () => {
     const bill = parseFloat(formData.bill);
     const monthlyKWh = bill / 0.12;
-    const systemSizeKW = monthlyKWh / 110; // Approx 110kWh/month per kW
+    const systemSizeKW = monthlyKWh / 110; 
     const cost = systemSizeKW * 1000 * 2.50;
     const annualSaving = bill * 12 * 0.76;
     const lifetimeSaving = annualSaving * 30;
@@ -100,101 +132,187 @@ export default function SolarCalculator() {
     setResults(null);
   };
 
+  const closeCalculator = () => {
+    setIsStarted(false);
+    reset();
+  };
+
+  const handleBook = () => {
+    const subject = encodeURIComponent(`New Solar Consultation Request - ${formData.name}`);
+    const body = encodeURIComponent(
+      `Hello IronOak Power Team,\n\n` +
+      `I have just completed the solar calculation on your website and would like to book a free consultation.\n\n` +
+      `--- CUSTOMER DETAILS ---\n` +
+      `Name: ${formData.name}\n` +
+      `Email: ${formData.email}\n` +
+      `Phone: ${formData.phone || 'Not provided'}\n\n` +
+      `--- CALCULATION RESULTS ---\n` +
+      `Monthly Bill: $${formData.bill}\n` +
+      `Estimated System Cost: ${results.cost}\n` +
+      `Annual Savings: ${results.annual}\n` +
+      `Lifetime Savings (30 years): ${results.lifetime}\n\n` +
+      `Please contact me to discuss my project further.\n` +
+      `Best regards.`
+    );
+    
+    window.location.href = `mailto:ineditodigital@gmail.com?subject=${subject}&body=${body}`;
+  };
+
   return (
-    <section id="calculator" className="relative min-h-[70vh] bg-primary flex items-center justify-center py-16 px-6 overflow-hidden">
-      {/* Background Decorative Elements */}
-      <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div className="absolute -top-1/4 -right-1/4 w-1/2 h-1/2 bg-accent/10 rounded-full blur-[120px]" />
-        <div className="absolute -bottom-1/4 -left-1/4 w-1/2 h-1/2 bg-accent/5 rounded-full blur-[120px]" />
-      </div>
-
-      <div className="relative z-10 w-full max-w-4xl" ref={formRef}>
-        <div ref={stepRef}>
-          {step < steps.length ? (
-            <div className="flex flex-col items-center text-center">
-              <div className="mb-8 flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center">
-                  <Calculator className="text-accent w-5 h-5" />
-                </div>
-                <span className="text-accent uppercase tracking-widest text-[10px] font-bold">Step {step + 1} of {steps.length}</span>
-              </div>
-
-              <h2 className="text-white text-2xl md:text-4xl font-bold mb-8 font-sans-condensed uppercase leading-tight">
-                {steps[step].question}
-              </h2>
-
-              <div className="w-full max-w-md relative group">
-                {steps[step].prefix && (
-                  <span className="absolute left-6 top-1/2 -translate-y-1/2 text-white/40 text-xl font-bold">{steps[step].prefix}</span>
-                )}
-                <input
-                  type={steps[step].type}
-                  value={formData[steps[step].id]}
-                  onChange={(e) => setFormData({ ...formData, [steps[step].id]: e.target.value })}
-                  onKeyDown={(e) => e.key === 'Enter' && handleNext()}
-                  placeholder={steps[step].placeholder}
-                  autoFocus
-                  className={`
-                    w-full bg-white/5 border-b-2 border-white/20 text-white text-xl md:text-2xl py-3 px-6 outline-none 
-                    transition-all duration-300 focus:border-accent group-hover:border-white/40
-                    ${steps[step].prefix ? 'pl-12' : ''}
-                  `}
-                />
-              </div>
-
-              <button
-                onClick={handleNext}
-                className="mt-12 group flex items-center gap-4 bg-accent text-primary px-8 py-4 rounded-full font-bold uppercase tracking-widest text-xs transition-all hover:scale-105 hover:bg-white active:scale-95"
-              >
-                {step === steps.length - 1 ? "Get Your Quote" : "Next Question"}
-                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-              </button>
-
-              <p className="mt-6 text-white/30 text-[10px] uppercase tracking-widest">Press Enter ↵</p>
-            </div>
-          ) : (
-            <div className="flex flex-col items-center">
-              <div className="mb-8 w-16 h-16 rounded-full bg-accent/20 flex items-center justify-center animate-pulse">
-                <CheckCircle2 className="text-accent w-8 h-8" />
-              </div>
-              
-              <h2 className="text-white text-3xl md:text-5xl font-bold mb-4 font-sans-condensed uppercase text-center">
-                Your Energy <span className="text-accent">Independence</span>
-              </h2>
-              <p className="text-white/60 text-base md:text-lg mb-12 text-center max-w-2xl font-light">
-                Based on your monthly bill of ${formData.bill}, here are your estimated potential savings with IronOak Power.
-              </p>
-
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full">
-                {[
-                  { label: "Estimated System Cost", value: results.cost, desc: "Total investment before incentives" },
-                  { label: "Annual Savings", value: results.annual, desc: "Estimated reduction in utility bills" },
-                  { label: "Lifetime Savings", value: results.lifetime, desc: "Projected 30-year energy savings" }
-                ].map((item, i) => (
-                  <div key={i} className="bg-white/5 backdrop-blur-xl p-8 rounded-3xl border border-white/10 text-center group hover:bg-white/10 transition-colors duration-500">
-                    <span className="text-accent uppercase tracking-widest text-[10px] font-bold block mb-4">{item.label}</span>
-                    <div className="text-white text-3xl md:text-4xl font-bold mb-4 font-sans-condensed">{item.value}</div>
-                    <p className="text-white/30 text-xs leading-relaxed uppercase">{item.desc}</p>
-                  </div>
-                ))}
-              </div>
-
-              <div className="mt-16 flex flex-col md:flex-row gap-6">
-                <button className="bg-accent text-primary px-12 py-5 rounded-full font-bold uppercase tracking-widest text-xs transition-all hover:bg-white hover:scale-105">
-                  Book a Consultation
-                </button>
-                <button 
-                  onClick={reset}
-                  className="flex items-center gap-3 text-white/50 border border-white/10 px-12 py-5 rounded-full font-bold uppercase tracking-widest text-xs transition-all hover:bg-white/5 hover:text-white"
-                >
-                  <RefreshCcw className="w-4 h-4" />
-                  Recalculate
-                </button>
-              </div>
-            </div>
-          )}
+    <>
+      {/* Entry Section */}
+      <section id="calculator" className="relative py-24 px-6 bg-dark overflow-hidden border-t border-white/5">
+        <div className="absolute inset-0 z-0">
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/10 rounded-full blur-[160px]" />
         </div>
-      </div>
-    </section>
+        
+        <div className="relative z-10 max-w-5xl mx-auto text-center">
+          <div className="inline-flex items-center gap-3 bg-white/5 border border-white/10 px-4 py-2 rounded-full mb-8">
+            <Zap className="text-accent w-4 h-4 fill-accent" />
+            <span className="text-white/60 text-[10px] font-bold uppercase tracking-widest">Energy Savings Calculator</span>
+          </div>
+          
+          <h2 className="text-white text-5xl md:text-7xl font-bold uppercase font-sans-condensed mb-8 leading-[0.9]">
+            Calculate Your <br />
+            <span className="text-accent italic font-serif lowercase">Solar Potential</span>
+          </h2>
+          
+          <p className="text-white/40 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light">
+            Discover how much you can save with IronOak Power in just 60 seconds. Our algorithm calculates system size, costs, and lifetime savings.
+          </p>
+          
+          <button 
+            onClick={handleStart}
+            className="group relative inline-flex items-center gap-4 bg-accent text-primary px-12 py-6 rounded-full font-bold uppercase tracking-widest text-sm transition-all hover:scale-105 active:scale-95"
+          >
+            Start Calculation
+            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-2" />
+          </button>
+        </div>
+      </section>
+
+      {/* Fullscreen Overlay */}
+      {isStarted && (
+        <div className="fixed inset-0 z-[100] bg-primary flex items-center justify-center p-6 md:p-12 overflow-y-auto">
+          {/* Background Elements */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute -top-1/4 -right-1/4 w-3/4 h-3/4 bg-accent/10 rounded-full blur-[140px]" />
+            <div className="absolute -bottom-1/4 -left-1/4 w-3/4 h-3/4 bg-accent/5 rounded-full blur-[140px]" />
+            <div className="absolute inset-0 bg-primary/20 backdrop-blur-[2px]" />
+          </div>
+
+          {/* Close Button */}
+          <button 
+            onClick={closeCalculator}
+            className="fixed top-8 right-8 z-[110] bg-white/10 hover:bg-white/20 p-4 rounded-full text-white transition-all hover:rotate-90"
+          >
+            <X className="w-6 h-6" />
+          </button>
+
+          <div className="relative z-10 w-full max-w-4xl" ref={formRef}>
+            <div ref={stepRef}>
+              {step < steps.length ? (
+                <div className="flex flex-col items-center text-center">
+                  <div className="mb-8 flex items-center gap-4">
+                    <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center">
+                      <Calculator className="text-accent w-6 h-6" />
+                    </div>
+                    <span className="text-accent uppercase tracking-widest text-xs font-bold">Step {step + 1} of {steps.length}</span>
+                  </div>
+
+                  <h2 className="text-white text-3xl md:text-6xl font-bold mb-12 font-sans-condensed uppercase leading-tight tracking-tight">
+                    {steps[step].question}
+                  </h2>
+
+                  <div className="w-full max-w-lg relative group">
+                    {steps[step].prefix && (
+                      <span className="absolute left-6 top-1/2 -translate-y-1/2 text-white/40 text-3xl font-bold">{steps[step].prefix}</span>
+                    )}
+                    <input
+                      ref={inputRef}
+                      type={steps[step].type}
+                      value={formData[steps[step].id]}
+                      onChange={(e) => setFormData({ ...formData, [steps[step].id]: e.target.value })}
+                      onKeyDown={(e) => e.key === 'Enter' && handleNext()}
+                      placeholder={steps[step].placeholder}
+                      className={`
+                        w-full bg-transparent border-b-2 border-white/20 text-white text-3xl md:text-5xl py-6 px-4 outline-none 
+                        transition-all duration-300 focus:border-accent group-hover:border-white/40
+                        ${steps[step].prefix ? 'pl-12' : ''}
+                      `}
+                    />
+                  </div>
+
+                  <div className="mt-16 flex items-center gap-4">
+                    {step > 0 && (
+                      <button
+                        onClick={handleBack}
+                        className="group flex items-center justify-center w-14 h-14 rounded-full border border-white/20 text-white transition-all hover:bg-white/10 active:scale-95"
+                        title="Previous Question"
+                      >
+                        <ArrowRight className="w-6 h-6 rotate-180" />
+                      </button>
+                    )}
+                    
+                    <button
+                      onClick={handleNext}
+                      className="group flex items-center gap-6 bg-accent text-primary px-12 py-6 rounded-full font-bold uppercase tracking-widest text-sm transition-all hover:scale-105 hover:bg-white active:scale-95"
+                    >
+                      {step === steps.length - 1 ? "Get My Results" : "Continue"}
+                      <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-2" />
+                    </button>
+                  </div>
+
+                  <p className="mt-8 text-white/20 text-xs uppercase tracking-[0.3em]">Press Enter to continue</p>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center w-full max-w-2xl mx-auto">
+                  <div className="mb-4 w-12 h-12 md:w-20 md:h-20 rounded-full bg-accent/20 flex items-center justify-center">
+                    <CheckCircle2 className="text-accent w-6 h-6 md:w-10 md:h-10" />
+                  </div>
+                  
+                  <h2 className="text-white text-2xl md:text-6xl font-bold mb-2 md:mb-6 font-sans-condensed uppercase text-center leading-tight">
+                    Your Energy <span className="text-accent">Independence</span>
+                  </h2>
+                  <p className="text-white/60 text-xs md:text-lg mb-6 md:mb-12 text-center max-w-2xl font-light">
+                    Estimated savings for your ${formData.bill}/mo bill.
+                  </p>
+
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 w-full">
+                    {[
+                      { label: "System Cost", value: results.cost, desc: "Before incentives" },
+                      { label: "Annual Savings", value: results.annual, desc: "Utility reduction" },
+                      { label: "Lifetime Savings", value: results.lifetime, desc: "30-year projection" }
+                    ].map((item, i) => (
+                      <div key={i} className="bg-white/5 backdrop-blur-xl p-3 md:p-8 rounded-2xl border border-white/10 text-center flex flex-col md:block justify-center">
+                        <span className="text-accent uppercase tracking-widest text-[8px] md:text-[10px] font-bold block mb-1 md:mb-4">{item.label}</span>
+                        <div className="text-white text-xl md:text-4xl font-bold mb-1 md:mb-4 font-sans-condensed">{item.value}</div>
+                        <p className="hidden md:block text-white/30 text-[10px] leading-relaxed uppercase tracking-wider">{item.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="mt-8 md:mt-16 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                    <button 
+                      onClick={handleBook}
+                      className="bg-accent text-primary px-8 md:px-16 py-4 md:py-6 rounded-full font-bold uppercase tracking-widest text-[10px] md:text-xs transition-all hover:bg-white hover:scale-105 shadow-xl shadow-accent/20"
+                    >
+                      Book Free Consultation
+                    </button>
+                    <button 
+                      onClick={reset}
+                      className="flex items-center justify-center gap-3 text-white/50 border border-white/10 px-8 md:px-16 py-4 md:py-6 rounded-full font-bold uppercase tracking-widest text-[10px] md:text-xs transition-all hover:bg-white/5 hover:text-white"
+                    >
+                      <RefreshCcw className="w-4 h-4" />
+                      Recalculate
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
