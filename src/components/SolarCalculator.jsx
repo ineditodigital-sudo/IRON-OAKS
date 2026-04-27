@@ -292,20 +292,14 @@ export default function SolarCalculator() {
                     Request <span className="text-accent">Sent</span>
                   </h2>
                   <p className="text-white/60 text-lg md:text-xl mb-12 max-w-2xl font-light">
-                    Thank you, {formData.name.split(' ')[0]}! Your request has been prepared. If your email app didn't open automatically, please click the button below.
+                    Your consultation request has been sent successfully. Our team will contact you soon to discuss your solar potential.
                   </p>
-                  <div className="flex flex-col sm:flex-row gap-6">
-                    <button 
-                      onClick={handleBook}
-                      className="bg-accent text-primary px-12 py-5 rounded-full font-bold uppercase tracking-widest text-xs transition-all hover:bg-white hover:scale-105"
-                    >
-                      Open Email Again
-                    </button>
+                  <div className="flex justify-center">
                     <button 
                       onClick={closeCalculator}
-                      className="text-white/50 border border-white/10 px-12 py-5 rounded-full font-bold uppercase tracking-widest text-xs transition-all hover:bg-white/5 hover:text-white"
+                      className="bg-accent text-primary px-16 py-5 rounded-full font-bold uppercase tracking-widest text-xs transition-all hover:bg-white hover:scale-105 shadow-xl shadow-accent/20"
                     >
-                      Close
+                      Close Calculator
                     </button>
                   </div>
                 </div>
