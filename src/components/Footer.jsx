@@ -1,8 +1,8 @@
 import { Mail, Phone, MapPin, Camera, Globe, MessageSquare } from 'lucide-react';
 
-export default function Footer() {
+export default function Footer({ onPrivacyClick, onTermsClick, onCancellationClick }) {
   return (
-    <footer className="bg-primary text-white rounded-t-[4rem] md:rounded-t-[6rem] px-8 md:px-20 pt-32 pb-12 overflow-hidden relative">
+    <footer className="bg-primary text-white px-8 md:px-20 pt-32 pb-12 overflow-hidden relative">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-24">
           <div>
@@ -21,6 +21,7 @@ export default function Footer() {
               <span className="text-accent text-xs font-bold uppercase tracking-widest">Navigation</span>
               <a href="#" className="text-white/60 hover:text-white transition-colors">Home</a>
               <a href="#services" className="text-white/60 hover:text-white transition-colors">Services</a>
+              <a href="#calculator" className="text-white/60 hover:text-white transition-colors">Calculator</a>
               <a href="#about" className="text-white/60 hover:text-white transition-colors">About</a>
               <a href="#partners" className="text-white/60 hover:text-white transition-colors">Partners</a>
             </div>
@@ -29,24 +30,29 @@ export default function Footer() {
               <span className="text-accent text-xs font-bold uppercase tracking-widest">Contact</span>
               <div className="flex items-center gap-2 text-white/60 text-sm">
                 <Mail className="w-4 h-4" />
-                <span>hello@ironoak.com</span>
+                <a href="mailto:Info@ironoakpower.com" className="hover:text-white transition-colors">Info@ironoakpower.com</a>
               </div>
               <div className="flex items-center gap-2 text-white/60 text-sm">
                 <Phone className="w-4 h-4" />
-                <span>+1 (555) 000-POWER</span>
+                <a href="tel:6139221093" className="hover:text-white transition-colors">613-922-1093</a>
               </div>
-              <div className="flex items-center gap-2 text-white/60 text-sm">
-                <MapPin className="w-4 h-4" />
-                <span>Oak Valley, CA</span>
+              <div className="flex items-start gap-2 text-white/60 text-sm">
+                <MapPin className="w-4 h-4 shrink-0 mt-1" />
+                <span>IronOak Power Inc.<br />51 Curtis St. ON.<br />K0k 2T0</span>
               </div>
             </div>
 
             <div className="flex flex-col gap-4">
-              <span className="text-accent text-xs font-bold uppercase tracking-widest">Social</span>
-              <div className="flex gap-4">
-                <Camera className="w-5 h-5 text-white/40 hover:text-accent transition-colors cursor-pointer" />
-                <Globe className="w-5 h-5 text-white/40 hover:text-accent transition-colors cursor-pointer" />
-                <MessageSquare className="w-5 h-5 text-white/40 hover:text-accent transition-colors cursor-pointer" />
+              <span className="text-accent text-xs font-bold uppercase tracking-widest">Hours of Operations</span>
+              <div className="text-white/60 text-sm flex flex-col gap-2">
+                <div className="flex justify-between gap-4">
+                  <span>Mon - Fri</span>
+                  <span className="text-white">8am - 5pm</span>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <span>Sat - Sun</span>
+                  <span className="text-white/30 italic">Closed</span>
+                </div>
               </div>
             </div>
           </div>
@@ -65,9 +71,10 @@ export default function Footer() {
             © 2026 Iron Oak Power. All rights reserved. Built to last.
           </div>
           
-          <div className="flex gap-8 text-[10px] text-white/40 uppercase font-bold tracking-widest">
-            <a href="#" className="hover:text-accent">Privacy Policy</a>
-            <a href="#" className="hover:text-accent">Terms of Service</a>
+          <div className="flex flex-wrap gap-8 text-[10px] text-white/40 uppercase font-bold tracking-widest">
+            <button onClick={onPrivacyClick} className="hover:text-accent cursor-pointer transition-colors">Privacy Policy</button>
+            <button onClick={onTermsClick} className="hover:text-accent cursor-pointer transition-colors">Terms of Service</button>
+            <button onClick={onCancellationClick} className="hover:text-accent cursor-pointer transition-colors">Cancellation Policy</button>
           </div>
         </div>
       </div>

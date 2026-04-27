@@ -30,7 +30,7 @@ export default function Hero() {
   return (
     <section 
       ref={containerRef}
-      className="relative h-[100dvh] w-full overflow-hidden flex items-end pb-24 px-12"
+      className="relative h-[100dvh] w-full overflow-hidden flex items-end pb-24 px-6 md:px-12"
     >
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
@@ -47,13 +47,13 @@ export default function Hero() {
         <div className="flex flex-col gap-2">
           <h1 
             ref={titleRef}
-            className="text-white text-5xl md:text-7xl lg:text-8xl font-sans-condensed font-bold uppercase leading-none tracking-tighter"
+            className="text-white text-4xl md:text-7xl lg:text-8xl font-sans-condensed font-bold uppercase leading-none tracking-tighter"
           >
             Built to last.
           </h1>
           <h2 
             ref={subtitleRef}
-            className="text-accent text-6xl md:text-8xl lg:text-9xl font-serif italic font-light leading-none -mt-2 md:-mt-4"
+            className="text-accent text-5xl md:text-8xl lg:text-9xl font-serif italic font-light leading-none -mt-1 md:-mt-4"
           >
             Powered by nature
           </h2>
