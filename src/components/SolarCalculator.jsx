@@ -12,6 +12,7 @@ export default function SolarCalculator() {
     email: ''
   });
   const [results, setResults] = useState(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   
   const formRef = useRef(null);
   const stepRef = useRef(null);
@@ -130,6 +131,7 @@ export default function SolarCalculator() {
     setStep(0);
     setFormData({ bill: '', name: '', phone: '', email: '' });
     setResults(null);
+    setIsSubmitted(false);
   };
 
   const closeCalculator = () => {
@@ -138,6 +140,7 @@ export default function SolarCalculator() {
   };
 
   const handleBook = () => {
+    setIsSubmitted(true);
     const subject = encodeURIComponent(`New Solar Consultation Request - ${formData.name}`);
     const body = encodeURIComponent(
       `Hello IronOak Power Team,\n\n` +
@@ -155,7 +158,7 @@ export default function SolarCalculator() {
       `Best regards.`
     );
     
-    window.location.href = `mailto:ineditodigital@gmail.com?subject=${subject}&body=${body}`;
+    window.open(`mailto:ineditodigital@gmail.com?subject=${subject}&body=${body}`, '_self');
   };
 
   return (
@@ -264,6 +267,32 @@ export default function SolarCalculator() {
                   </div>
 
                   <p className="mt-8 text-white/20 text-xs uppercase tracking-[0.3em]">Press Enter to continue</p>
+                </div>
+              ) : isSubmitted ? (
+                <div className="flex flex-col items-center text-center animate-in fade-in zoom-in duration-500">
+                  <div className="mb-8 w-20 h-20 rounded-full bg-accent flex items-center justify-center shadow-lg shadow-accent/20">
+                    <CheckCircle2 className="text-primary w-10 h-10" />
+                  </div>
+                  <h2 className="text-white text-3xl md:text-6xl font-bold mb-6 font-sans-condensed uppercase tracking-tight">
+                    Request <span className="text-accent">Sent</span>
+                  </h2>
+                  <p className="text-white/60 text-lg md:text-xl mb-12 max-w-2xl font-light">
+                    Thank you, {formData.name.split(' ')[0]}! Your request has been prepared. If your email app didn't open automatically, please click the button below.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-6">
+                    <button 
+                      onClick={handleBook}
+                      className="bg-accent text-primary px-12 py-5 rounded-full font-bold uppercase tracking-widest text-xs transition-all hover:bg-white hover:scale-105"
+                    >
+                      Open Email Again
+                    </button>
+                    <button 
+                      onClick={closeCalculator}
+                      className="text-white/50 border border-white/10 px-12 py-5 rounded-full font-bold uppercase tracking-widest text-xs transition-all hover:bg-white/5 hover:text-white"
+                    >
+                      Close
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <div className="flex flex-col items-center w-full max-w-2xl mx-auto">
