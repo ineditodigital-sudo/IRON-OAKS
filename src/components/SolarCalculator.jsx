@@ -13,6 +13,7 @@ export default function SolarCalculator() {
   });
   const [results, setResults] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSending, setIsSending] = useState(false);
   
   const formRef = useRef(null);
   const stepRef = useRef(null);
@@ -132,6 +133,7 @@ export default function SolarCalculator() {
     setFormData({ bill: '', name: '', phone: '', email: '' });
     setResults(null);
     setIsSubmitted(false);
+    setIsSending(false);
   };
 
   const closeCalculator = () => {
@@ -139,26 +141,39 @@ export default function SolarCalculator() {
     reset();
   };
 
-  const handleBook = () => {
-    setIsSubmitted(true);
-    const subject = encodeURIComponent(`New Solar Consultation Request - ${formData.name}`);
-    const body = encodeURIComponent(
-      `Hello IronOak Power Team,\n\n` +
-      `I have just completed the solar calculation on your website and would like to book a free consultation.\n\n` +
-      `--- CUSTOMER DETAILS ---\n` +
-      `Name: ${formData.name}\n` +
-      `Email: ${formData.email}\n` +
-      `Phone: ${formData.phone || 'Not provided'}\n\n` +
-      `--- CALCULATION RESULTS ---\n` +
-      `Monthly Bill: $${formData.bill}\n` +
-      `Estimated System Cost: ${results.cost}\n` +
-      `Annual Savings: ${results.annual}\n` +
-      `Lifetime Savings (30 years): ${results.lifetime}\n\n` +
-      `Please contact me to discuss my project further.\n` +
-      `Best regards.`
-    );
+  const handleBook = async () => {
+    setIsSending(true);
     
-    window.open(`mailto:ineditodigital@gmail.com?subject=${subject}&body=${body}`, '_self');
+    const payload = {
+      name: formData.name,
+      email: formData.email,
+      phone: formData.phone,
+      bill: formData.bill,
+      cost: results.cost,
+      annual: results.annual,
+      lifetime: results.lifetime
+    };
+
+    try {
+      const response = await fetch('./send-email.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+      } else {
+        throw new Error('Failed to send');
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      alert('There was an error sending your request. Please try again later.');
+    } finally {
+      setIsSending(false);
+    }
   };
 
   return (
@@ -324,9 +339,10 @@ export default function SolarCalculator() {
                   <div className="mt-8 md:mt-16 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                     <button 
                       onClick={handleBook}
-                      className="bg-accent text-primary px-8 md:px-16 py-4 md:py-6 rounded-full font-bold uppercase tracking-widest text-[10px] md:text-xs transition-all hover:bg-white hover:scale-105 shadow-xl shadow-accent/20"
+                      disabled={isSending}
+                      className="bg-accent text-primary px-8 md:px-16 py-4 md:py-6 rounded-full font-bold uppercase tracking-widest text-[10px] md:text-xs transition-all hover:bg-white hover:scale-105 shadow-xl shadow-accent/20 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Book Free Consultation
+                      {isSending ? 'Sending...' : 'Book Free Consultation'}
                     </button>
                     <button 
                       onClick={reset}
