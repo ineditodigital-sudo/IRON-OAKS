@@ -18,6 +18,29 @@ export default function SolarCalculator() {
   const formRef = useRef(null);
   const stepRef = useRef(null);
   const inputRef = useRef(null);
+  const overlayRef = useRef(null);
+
+  useEffect(() => {
+    if (isStarted && overlayRef.current) {
+      // Fade and scale in the entire overlay
+      gsap.fromTo(overlayRef.current, 
+        { opacity: 0 },
+        { opacity: 1, duration: 0.5, ease: "power2.out" }
+      );
+
+      // Animate the inner content with a rise and scale effect
+      gsap.fromTo(formRef.current,
+        { y: 60, opacity: 0, scale: 0.95 },
+        { y: 0, opacity: 1, scale: 1, duration: 0.8, delay: 0.1, ease: "power4.out" }
+      );
+
+      // Animate decorative background blobs
+      gsap.fromTo(overlayRef.current.querySelectorAll('.blob'),
+        { scale: 0.2, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 1.5, stagger: 0.2, ease: "power2.out" }
+      );
+    }
+  }, [isStarted]);
 
   useEffect(() => {
     if (isStarted && inputRef.current) {
@@ -211,11 +234,14 @@ export default function SolarCalculator() {
 
       {/* Fullscreen Overlay */}
       {isStarted && (
-        <div className="fixed inset-0 z-[100] bg-primary flex items-center justify-center p-6 md:p-12 overflow-y-auto">
+        <div 
+          ref={overlayRef}
+          className="fixed inset-0 z-[100] bg-primary flex items-center justify-center p-6 md:p-12 overflow-y-auto"
+        >
           {/* Background Elements */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute -top-1/4 -right-1/4 w-3/4 h-3/4 bg-accent/10 rounded-full blur-[140px]" />
-            <div className="absolute -bottom-1/4 -left-1/4 w-3/4 h-3/4 bg-accent/5 rounded-full blur-[140px]" />
+            <div className="blob absolute -top-1/4 -right-1/4 w-3/4 h-3/4 bg-accent/10 rounded-full blur-[140px]" />
+            <div className="blob absolute -bottom-1/4 -left-1/4 w-3/4 h-3/4 bg-accent/5 rounded-full blur-[140px]" />
             <div className="absolute inset-0 bg-primary/20 backdrop-blur-[2px]" />
           </div>
 
