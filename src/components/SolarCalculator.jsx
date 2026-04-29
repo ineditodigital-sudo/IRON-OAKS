@@ -14,6 +14,7 @@ export default function SolarCalculator() {
   const [results, setResults] = useState(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSending, setIsSending] = useState(false);
+  const [isCalculating, setIsCalculating] = useState(false);
   
   const formRef = useRef(null);
   const stepRef = useRef(null);
@@ -127,26 +128,32 @@ export default function SolarCalculator() {
   };
 
   const calculateResults = () => {
-    const bill = parseFloat(formData.bill);
-    const monthlyKWh = bill / 0.12;
-    const systemSizeKW = monthlyKWh / 110; 
-    const cost = systemSizeKW * 1000 * 2.50;
-    const annualSaving = bill * 12 * 0.76;
-    const lifetimeSaving = annualSaving * 30;
-
-    setResults({
-      cost: cost.toLocaleString('en-US', { style: 'currency', currency: 'USD' }),
-      annual: annualSaving.toLocaleString('en-US', { style: 'currency', currency: 'USD' }),
-      lifetime: lifetimeSaving.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
-    });
-
+    setIsCalculating(true);
+    
     gsap.to(stepRef.current, {
       opacity: 0,
       y: -20,
       duration: 0.3,
       onComplete: () => {
-        setStep(steps.length);
-        gsap.fromTo(stepRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 });
+        // Simulated calculation delay for better UX/feedback
+        setTimeout(() => {
+          const bill = parseFloat(formData.bill);
+          const monthlyKWh = bill / 0.12;
+          const systemSizeKW = monthlyKWh / 110; 
+          const cost = systemSizeKW * 1000 * 2.50;
+          const annualSaving = bill * 12 * 0.76;
+          const lifetimeSaving = annualSaving * 30;
+
+          setResults({
+            cost: cost.toLocaleString('en-US', { style: 'currency', currency: 'USD' }),
+            annual: annualSaving.toLocaleString('en-US', { style: 'currency', currency: 'USD' }),
+            lifetime: lifetimeSaving.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+          });
+
+          setIsCalculating(false);
+          setStep(steps.length);
+          gsap.fromTo(stepRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 });
+        }, 1500);
       }
     });
   };
@@ -157,6 +164,7 @@ export default function SolarCalculator() {
     setResults(null);
     setIsSubmitted(false);
     setIsSending(false);
+    setIsCalculating(false);
   };
 
   const closeCalculator = () => {
@@ -274,7 +282,31 @@ export default function SolarCalculator() {
 
           <div className="relative z-10 w-full max-w-4xl" ref={formRef}>
             <div ref={stepRef}>
-              {step < steps.length ? (
+              {isCalculating ? (
+                <div className="flex flex-col items-center text-center animate-in fade-in duration-500">
+                  <div className="relative w-20 h-20 md:w-24 md:h-24 mb-8">
+                    <div className="absolute inset-0 border-4 border-accent/10 rounded-full" />
+                    <div className="absolute inset-0 border-4 border-t-accent rounded-full animate-spin" />
+                    <Zap className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-accent w-8 h-8 animate-pulse" />
+                  </div>
+                  <h2 className="text-white text-3xl md:text-5xl font-bold uppercase font-sans-condensed tracking-tight mb-4">
+                    Calculating your <span className="text-accent">Potential</span>
+                  </h2>
+                  <p className="text-white/40 uppercase tracking-[0.3em] text-[10px]">Analyzing energy patterns...</p>
+                </div>
+              ) : isSending ? (
+                <div className="flex flex-col items-center text-center animate-in fade-in duration-500">
+                  <div className="relative w-20 h-20 md:w-24 md:h-24 mb-8">
+                    <div className="absolute inset-0 border-4 border-white/5 rounded-full" />
+                    <div className="absolute inset-0 border-4 border-t-white rounded-full animate-spin" />
+                    <CheckCircle2 className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-white w-8 h-8 animate-pulse" />
+                  </div>
+                  <h2 className="text-white text-3xl md:text-5xl font-bold uppercase font-sans-condensed tracking-tight mb-4">
+                    Securing your <span className="text-accent">Savings</span>
+                  </h2>
+                  <p className="text-white/40 uppercase tracking-[0.3em] text-[10px]">Sending request to our team...</p>
+                </div>
+              ) : step < steps.length ? (
                 <div className="flex flex-col items-center text-center">
                   <div className="mb-8 flex items-center gap-4">
                     <div className="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center">
@@ -381,7 +413,7 @@ export default function SolarCalculator() {
                       disabled={isSending}
                       className="bg-accent text-primary px-8 md:px-16 py-4 md:py-6 rounded-full font-bold uppercase tracking-widest text-[10px] md:text-xs transition-all hover:bg-white hover:scale-105 shadow-xl shadow-accent/20 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      {isSending ? 'Sending...' : 'Book Free Consultation'}
+                      Book Free Consultation
                     </button>
                     <button 
                       onClick={reset}
@@ -393,6 +425,7 @@ export default function SolarCalculator() {
                   </div>
                 </div>
               )}
+            </div>
             </div>
           </div>
         </div>
