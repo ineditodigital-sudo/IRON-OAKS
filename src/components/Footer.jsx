@@ -44,11 +44,18 @@ export default function Footer({ onPrivacyClick, onTermsClick, onCancellationCli
                     <span className="hidden md:inline">613-922-1093</span>
                   </a>
                 </div>
-                <div className="flex items-start gap-2 text-white/60 text-[10px] md:text-sm">
-                  <MapPin className="w-3 h-3 md:w-4 md:h-4 shrink-0" />
-                  <span className="md:hidden">ON, Canada</span>
-                  <span className="hidden md:inline">IronOak Power Inc.<br />51 Curtis St. ON.<br />K0k 2T0</span>
-                </div>
+                <a 
+                  href="https://maps.app.goo.gl/UHXdmonPwvx6Pves5" 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="flex items-start gap-2 text-white/60 hover:text-white transition-colors text-[10px] md:text-sm"
+                >
+                  <MapPin className="w-3 h-3 md:w-4 md:h-4 shrink-0 mt-1" />
+                  <div>
+                    <span className="md:hidden">ON, Canada</span>
+                    <span className="hidden md:inline">IronOak Power Inc.<br />51 Curtis St. ON.<br />K0k 2T0</span>
+                  </div>
+                </a>
               </div>
             </div>
 
