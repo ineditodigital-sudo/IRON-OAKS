@@ -128,31 +128,43 @@ export default function SolarCalculator() {
   };
 
   const calculateResults = () => {
-    setIsCalculating(true);
-    
+    // 1. Animate out the current step
     gsap.to(stepRef.current, {
       opacity: 0,
       y: -20,
       duration: 0.3,
       onComplete: () => {
-        // Simulated calculation delay for better UX/feedback
+        // 2. Show calculating state and animate it in
+        setIsCalculating(true);
+        gsap.fromTo(stepRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 });
+
+        // 3. Simulated calculation delay
         setTimeout(() => {
-          const bill = parseFloat(formData.bill);
-          const monthlyKWh = bill / 0.12;
-          const systemSizeKW = monthlyKWh / 110; 
-          const cost = systemSizeKW * 1000 * 2.50;
-          const annualSaving = bill * 12 * 0.76;
-          const lifetimeSaving = annualSaving * 30;
+          // 4. Animate out calculating state
+          gsap.to(stepRef.current, {
+            opacity: 0,
+            y: -20,
+            duration: 0.3,
+            onComplete: () => {
+              const bill = parseFloat(formData.bill);
+              const monthlyKWh = bill / 0.12;
+              const systemSizeKW = monthlyKWh / 110; 
+              const cost = systemSizeKW * 1000 * 2.50;
+              const annualSaving = bill * 12 * 0.76;
+              const lifetimeSaving = annualSaving * 30;
 
-          setResults({
-            cost: cost.toLocaleString('en-US', { style: 'currency', currency: 'USD' }),
-            annual: annualSaving.toLocaleString('en-US', { style: 'currency', currency: 'USD' }),
-            lifetime: lifetimeSaving.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+              setResults({
+                cost: cost.toLocaleString('en-US', { style: 'currency', currency: 'USD' }),
+                annual: annualSaving.toLocaleString('en-US', { style: 'currency', currency: 'USD' }),
+                lifetime: lifetimeSaving.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+              });
+
+              // 5. Show results and animate them in
+              setIsCalculating(false);
+              setStep(steps.length);
+              gsap.fromTo(stepRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 });
+            }
           });
-
-          setIsCalculating(false);
-          setStep(steps.length);
-          gsap.fromTo(stepRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 });
         }, 3000);
       }
     });
