@@ -29,7 +29,7 @@ export default function BlogSection({ blogs, onReadMore }) {
   return (
     <section id="blog" className="py-16 px-6 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-10 gap-6">
           <div className="max-w-xl">
             <h4 className="text-accent font-bold uppercase tracking-[0.3em] text-[8px] mb-2">Latest Insights</h4>
             <h2 className="text-dark text-4xl md:text-5xl font-bold uppercase font-sans-condensed leading-[0.9]">
