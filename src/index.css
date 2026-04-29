@@ -18,6 +18,11 @@
 }
 
 @layer base {
+  html {
+    @apply scroll-smooth;
+    scroll-padding-top: 140px;
+  }
+
   html, body {
     @apply bg-bg text-dark antialiased overflow-x-hidden selection:bg-accent/30;
     font-family: var(--font-drama);
