@@ -6,6 +6,13 @@ import { Award, MessagesSquare, HeartHandshake } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const getImageUrl = (url) => {
+  if (!url) return '';
+  if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/')) return url;
+  if (url.includes('api/uploads')) return '/' + url.replace(/^\/+/, '');
+  return url;
+};
+
 export default function About({ data }) {
   const containerRef = useRef(null);
   const textRef = useRef(null);
@@ -34,7 +41,7 @@ export default function About({ data }) {
     
     // HLS Support for Video
     const video = videoRef.current;
-    const videoSrc = data?.videoUrl || "https://video.squarespace-cdn.com/content/v1/685d9c11e3d5cf3b64cda10e/29eaaae8-599d-4008-b7e2-764e69efbe26/playlist.m3u8";
+    const videoSrc = getImageUrl(data?.videoUrl) || "https://video.squarespace-cdn.com/content/v1/685d9c11e3d5cf3b64cda10e/29eaaae8-599d-4008-b7e2-764e69efbe26/playlist.m3u8";
 
     if (videoSrc.endsWith('.m3u8')) {
       if (Hls.isSupported()) {

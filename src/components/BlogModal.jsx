@@ -2,6 +2,14 @@ import { useEffect, useRef } from 'react';
 import { X, Calendar, User, ArrowRight } from 'lucide-react';
 import { gsap } from 'gsap';
 
+const getImageUrl = (url) => {
+  if (!url) return '';
+  if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/')) return url;
+  // If it's a relative path from the API, make it absolute from root
+  if (url.startsWith('api/uploads')) return '/' + url;
+  return url;
+};
+
 export default function BlogModal({ blog, onClose }) {
   const modalRef = useRef(null);
   const contentRef = useRef(null);
@@ -52,7 +60,7 @@ export default function BlogModal({ blog, onClose }) {
         {/* Header Media */}
         <div className="relative aspect-[21/9] rounded-[2.5rem] overflow-hidden mb-12 border border-white/10 shadow-2xl">
           <img 
-            src={blog.image || 'https://images.unsplash.com/photo-1509391366360-fe5bb60213ad?q=80&w=1000'} 
+            src={getImageUrl(blog.image) || 'https://images.unsplash.com/photo-1509391366360-fe5bb60213ad?q=80&w=1000'} 
             alt={blog.title}
             className="w-full h-full object-cover"
           />

@@ -5,7 +5,10 @@ import { ArrowLeft, ArrowRight, Calendar, User } from 'lucide-react';
 const getImageUrl = (url) => {
   if (!url) return '';
   if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/')) return url;
-  return '/' + url;
+  if (url.includes('api/uploads')) {
+    return url.startsWith('/') ? url : '/' + url;
+  }
+  return url;
 };
 
 export default function BlogSection({ blogs, onReadMore }) {

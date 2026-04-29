@@ -1,6 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 
+const getImageUrl = (url) => {
+  if (!url) return '';
+  if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/')) return url;
+  if (url.includes('api/uploads')) return '/' + url.replace(/^\/+/, '');
+  return url;
+};
+
 export default function Hero({ data }) {
   const containerRef = useRef(null);
   const titleRef = useRef(null);
@@ -36,7 +43,7 @@ export default function Hero({ data }) {
       <div className="absolute inset-0 z-0">
         {data.videoUrl ? (
           <video 
-            src={data.videoUrl}
+            src={getImageUrl(data.videoUrl)}
             autoPlay 
             muted 
             loop 
@@ -45,7 +52,7 @@ export default function Hero({ data }) {
           />
         ) : (
           <img 
-            src={data.fallbackImage || "https://imagenes.inedito.digital/IRONOAK%20POWER/Gemini_Generated_Image_g6qwymg6qwymg6qw.webp"} 
+            src={getImageUrl(data.fallbackImage) || "https://imagenes.inedito.digital/IRONOAK%20POWER/Gemini_Generated_Image_g6qwymg6qwymg6qw.webp"} 
             alt="Iron Oak Power Hero"
             className="w-full h-full object-cover"
           />

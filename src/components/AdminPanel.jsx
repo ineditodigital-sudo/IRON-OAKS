@@ -21,7 +21,12 @@ import {
 const getImageUrl = (url) => {
   if (!url) return '';
   if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/')) return url;
-  return '/' + url;
+  // If it's a relative path from the API (e.g. api/uploads/...), ensure it's absolute from root
+  if (url.includes('api/uploads')) {
+    const cleanPath = url.startsWith('/') ? url : '/' + url;
+    return cleanPath;
+  }
+  return url;
 };
 
 export default function AdminPanel() {

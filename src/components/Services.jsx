@@ -8,6 +8,13 @@ import service3 from '../assets/images/service-3.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const getImageUrl = (url) => {
+  if (!url) return '';
+  if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/')) return url;
+  if (url.includes('api/uploads')) return '/' + url.replace(/^\/+/, '');
+  return url;
+};
+
 export default function Services({ data }) {
   const containerRef = useRef(null);
   useEffect(() => {
@@ -71,7 +78,7 @@ export default function Services({ data }) {
               {/* Background Image */}
               <div className="absolute inset-0 transition-transform duration-1000 group-hover:scale-110">
                 <img 
-                  src={service.image} 
+                  src={getImageUrl(service.image)} 
                   alt={service.title} 
                   className="w-full h-full object-cover grayscale-[30%] brightness-[0.7] contrast-[1.1] transition-all duration-700 group-hover:grayscale-0 group-hover:brightness-[0.4]"
                   loading="lazy"
