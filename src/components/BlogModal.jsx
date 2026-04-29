@@ -103,11 +103,17 @@ export default function BlogModal({ blog, onClose }) {
           <div className="pt-16 border-t border-white/5">
             <div className="bg-accent/10 p-10 rounded-[2.5rem] border border-accent/20 flex flex-col md:flex-row items-center justify-between gap-8">
               <div className="text-center md:text-left">
-                <h3 className="text-2xl font-bold text-white uppercase font-sans-condensed mb-2">Interested in Solar?</h3>
-                <p className="text-accent/70 text-sm tracking-wide">Get a free consultation for your project today.</p>
+                <p className="text-accent/70 text-lg font-bold uppercase tracking-widest leading-tight">Ready to see your savings?</p>
+                <p className="text-white/40 text-[10px] uppercase tracking-[0.2em] mt-1">Free solar consultation included</p>
               </div>
               <button 
-                onClick={handleClose}
+                onClick={() => {
+                  handleClose();
+                  setTimeout(() => {
+                    const el = document.getElementById('calculator');
+                    if (el) el.scrollIntoView({ behavior: 'smooth' });
+                  }, 500);
+                }}
                 className="bg-accent text-primary px-10 py-5 rounded-2xl font-bold uppercase tracking-widest text-xs hover:bg-white hover:scale-105 active:scale-95 transition-all shadow-xl shadow-accent/20"
               >
                 Start Calculation
