@@ -160,8 +160,27 @@ export default function SolarCalculator() {
   };
 
   const closeCalculator = () => {
-    setIsStarted(false);
-    reset();
+    if (overlayRef.current) {
+      gsap.to(overlayRef.current, {
+        opacity: 0,
+        duration: 0.4,
+        ease: "power2.in",
+        onComplete: () => {
+          setIsStarted(false);
+          reset();
+        }
+      });
+      gsap.to(formRef.current, {
+        y: 40,
+        scale: 0.95,
+        opacity: 0,
+        duration: 0.4,
+        ease: "power2.in"
+      });
+    } else {
+      setIsStarted(false);
+      reset();
+    }
   };
 
   const handleBook = async () => {
