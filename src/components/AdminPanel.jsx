@@ -71,7 +71,7 @@ export default function AdminPanel() {
     formData.append('file', file);
 
     try {
-      const response = await fetch('./api/cms.php', {
+      const response = await fetch('/api/cms.php', {
         method: 'POST',
         body: formData
       });
