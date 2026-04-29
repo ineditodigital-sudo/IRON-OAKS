@@ -403,10 +403,10 @@ export default function SolarCalculator() {
                       { label: "Annual Savings", value: results.annual, desc: "Utility reduction" },
                       { label: "Lifetime Savings", value: results.lifetime, desc: "30-year projection" }
                     ].map((item, i) => (
-                      <div key={i} className="bg-white/5 backdrop-blur-xl p-3 md:p-8 rounded-2xl border border-white/10 text-center flex flex-col md:block justify-center">
-                        <span className="text-accent uppercase tracking-widest text-[8px] md:text-[10px] font-bold block mb-1 md:mb-4">{item.label}</span>
-                        <div className="text-white text-xl md:text-4xl font-bold mb-1 md:mb-4 font-sans-condensed">{item.value}</div>
-                        <p className="hidden md:block text-white/30 text-[10px] leading-relaxed uppercase tracking-wider">{item.desc}</p>
+                      <div key={i} className="bg-white/5 backdrop-blur-xl p-6 md:p-8 rounded-2xl border border-white/10 flex flex-col items-center justify-center text-center">
+                        <span className="text-accent uppercase tracking-widest text-[8px] md:text-[10px] font-bold block mb-2 md:mb-4">{item.label}</span>
+                        <div className="text-white text-xl md:text-3xl lg:text-4xl font-bold mb-2 md:mb-4 font-sans-condensed leading-none">{item.value}</div>
+                        <p className="hidden md:block text-white/30 text-[9px] lg:text-[10px] leading-relaxed uppercase tracking-wider">{item.desc}</p>
                       </div>
                     ))}
                   </div>
