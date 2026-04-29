@@ -58,7 +58,7 @@ if ($method === 'POST') {
                 $target = $uploadDir . $filename;
                 
                 if (move_uploaded_file($file['tmp_name'], $target)) {
-                    $url = 'api/uploads/' . $filename; // Relative URL
+                    $url = '/api/uploads/' . $filename; // Absolute URL from root
                     echo json_encode(["success" => true, "url" => $url]);
                 } else {
                     echo json_encode(["error" => "Upload failed"]);

@@ -2,6 +2,12 @@ import { useRef, useEffect } from 'react';
 import { gsap } from 'gsap';
 import { ArrowLeft, ArrowRight, Calendar, User } from 'lucide-react';
 
+const getImageUrl = (url) => {
+  if (!url) return '';
+  if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/')) return url;
+  return '/' + url;
+};
+
 export default function BlogSection({ blogs }) {
   const scrollRef = useRef(null);
 
@@ -58,7 +64,7 @@ export default function BlogSection({ blogs }) {
             >
               <div className="aspect-[16/10] overflow-hidden relative">
                 <img 
-                  src={blog.image || 'https://images.unsplash.com/photo-1509391366360-fe5bb60213ad?q=80&w=1000'} 
+                  src={getImageUrl(blog.image) || 'https://images.unsplash.com/photo-1509391366360-fe5bb60213ad?q=80&w=1000'} 
                   alt={blog.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />

@@ -18,6 +18,12 @@ import {
   Globe
 } from 'lucide-react';
 
+const getImageUrl = (url) => {
+  if (!url) return '';
+  if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/')) return url;
+  return '/' + url;
+};
+
 export default function AdminPanel() {
   const { content, loading, saveContent } = useContent();
   const [activeTab, setActiveTab] = useState('general');
@@ -261,7 +267,7 @@ export default function AdminPanel() {
                   <div key={blog.id} className="glass rounded-[2rem] p-6 flex flex-col md:flex-row gap-6 items-start group relative">
                     <div className="w-full md:w-32 h-32 rounded-2xl bg-white/5 overflow-hidden relative shrink-0">
                       {blog.image ? (
-                        <img src={blog.image} className="w-full h-full object-cover" />
+                        <img src={getImageUrl(blog.image)} className="w-full h-full object-cover" />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-white/10"><ImageIcon size={32} /></div>
                       )}
