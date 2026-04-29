@@ -153,7 +153,7 @@ export default function SolarCalculator() {
           setIsCalculating(false);
           setStep(steps.length);
           gsap.fromTo(stepRef.current, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.5 });
-        }, 1500);
+        }, 3000);
       }
     });
   };
@@ -205,13 +205,17 @@ export default function SolarCalculator() {
     };
 
     try {
-      const response = await fetch('./send-email.php', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
+      // Add a minimum delay of 2.5s for the loading animation
+      const [response] = await Promise.all([
+        fetch('./send-email.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(payload),
+        }),
+        new Promise(resolve => setTimeout(resolve, 2500))
+      ]);
 
       if (response.ok) {
         setIsSubmitted(true);
