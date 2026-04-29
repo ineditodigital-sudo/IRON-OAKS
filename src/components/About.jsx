@@ -2,6 +2,7 @@ import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Hls from 'hls.js';
+import { Award, MessagesSquare, HeartHandshake } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -105,12 +106,26 @@ export default function About() {
               
               <ul className="space-y-10">
                 {[
-                  { title: "Quality craftsmanship", desc: "Precision and durability in every installation" },
-                  { title: "Clear communication", desc: "Timely and transparent updates throughout the process" },
-                  { title: "Exceptional service", desc: "Dedicated support from start to finish" }
+                  { 
+                    title: "Quality craftsmanship", 
+                    desc: "Precision and durability in every installation",
+                    icon: Award 
+                  },
+                  { 
+                    title: "Clear communication", 
+                    desc: "Timely and transparent updates throughout the process",
+                    icon: MessagesSquare 
+                  },
+                  { 
+                    title: "Exceptional service", 
+                    desc: "Dedicated support from start to finish",
+                    icon: HeartHandshake 
+                  }
                 ].map((item, i) => (
                   <li key={i} className="group flex items-start gap-6">
-                    <div className="mt-2 h-1 w-6 bg-accent/30 group-hover:bg-accent transition-colors duration-500" />
+                    <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-accent flex items-center justify-center group-hover:scale-110 transition-all duration-500 shadow-lg shadow-accent/20">
+                      <item.icon className="w-6 h-6 text-dark" strokeWidth={2} />
+                    </div>
                     <div>
                       <h4 className="text-white text-xl font-bold uppercase font-sans-condensed mb-2 tracking-tight">
                         {item.title}
@@ -122,12 +137,6 @@ export default function About() {
                   </li>
                 ))}
               </ul>
-
-              <a href="#calculator" className="block w-full">
-                <button className="w-full mt-12 px-10 py-5 rounded-full bg-accent text-dark uppercase tracking-widest text-xs font-bold hover:scale-[1.02] active:scale-[0.98] transition-all duration-500 shadow-xl shadow-accent/20">
-                  Partner with us
-                </button>
-              </a>
             </div>
           </div>
         </div>

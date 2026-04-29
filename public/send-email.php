@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <!DOCTYPE html>
         <html>
         <head>
-            <meta charset='UTF-8'>
+            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
             <style>
                 body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.6; color: #1a2b3c; margin: 0; padding: 0; background-color: #f4f7f9; }
                 .container { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #e1e8ed; }
@@ -34,15 +34,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 .content { padding: 40px; }
                 .title { font-size: 22px; font-weight: bold; color: #1a2b3c; margin-bottom: 30px; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
                 .info-section { margin-bottom: 30px; }
-                .info-row { margin-bottom: 15px; font-size: 14px; display: flex; }
-                .info-label { font-weight: bold; color: #89ae83; width: 140px; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; }
-                .info-value { color: #1a2b3c; font-size: 15px; }
+                .info-row { margin-bottom: 20px; font-size: 14px; }
+                .info-label { font-weight: bold; color: #89ae83; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
+                .info-value { color: #1a2b3c; font-size: 16px; display: block; }
                 .results-box { background-color: #f8fafc; border-radius: 8px; padding: 25px; border-left: 4px solid #89ae83; margin-top: 20px; }
-                .results-title { font-size: 12px; font-weight: bold; color: #89ae83; text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
+                .results-title { font-size: 12px; font-weight: bold; color: #89ae83; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px; }
                 .footer { background-color: #ffffff; padding: 30px 20px; text-align: center; border-top: 1px solid #f0f0f0; }
                 .footer-logo { max-width: 100px; opacity: 0.5; margin-bottom: 15px; }
                 .copyright { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
                 .date { font-size: 10px; color: #cbd5e1; margin-top: 5px; }
+
+                @media only screen and (max-width: 600px) {
+                    .container { margin: 0 auto !important; width: 100% !important; border-radius: 0 !important; border: none !important; }
+                    .content { padding: 30px 20px !important; }
+                    .title { font-size: 20px !important; }
+                    .info-value { font-size: 15px !important; }
+                }
             </style>
         </head>
         <body>

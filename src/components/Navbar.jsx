@@ -49,9 +49,10 @@ export default function Navbar() {
           <a href="#calculator" className="hidden sm:block">
             <button className={`
               px-6 py-2 rounded-full text-[10px] md:text-xs font-bold uppercase tracking-widest transition-all duration-300
+              hover:scale-105 active:scale-95 hover:shadow-xl
               ${isScrolled || isMenuOpen ? 'bg-primary text-white' : 'bg-white text-primary'}
             `}>
-              Contact
+              Get a Quote
             </button>
           </a>
 
@@ -81,7 +82,7 @@ export default function Navbar() {
               {link.name}
             </a>
           ))}
-          <a href="#calculator" onClick={() => setIsMenuOpen(false)} className="bg-primary text-white text-center py-4 rounded-xl font-bold uppercase tracking-widest text-xs mt-2">
+          <a href="#calculator" onClick={() => setIsMenuOpen(false)} className="bg-primary text-white text-center py-4 rounded-xl font-bold uppercase tracking-widest text-xs mt-2 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">
             Get a Quote
           </a>
         </div>
