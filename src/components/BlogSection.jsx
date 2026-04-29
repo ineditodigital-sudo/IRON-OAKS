@@ -8,12 +8,12 @@ const getImageUrl = (url) => {
   return '/' + url;
 };
 
-export default function BlogSection({ blogs }) {
+export default function BlogSection({ blogs, onReadMore }) {
   const scrollRef = useRef(null);
 
   const scroll = (direction) => {
     if (!scrollRef.current) return;
-    const scrollAmount = 400;
+    const scrollAmount = 350;
     const currentScroll = scrollRef.current.scrollLeft;
     
     gsap.to(scrollRef.current, {
@@ -26,76 +26,72 @@ export default function BlogSection({ blogs }) {
   if (!blogs || blogs.length === 0) return null;
 
   return (
-    <section id="blog" className="py-24 px-6 bg-white relative overflow-hidden">
+    <section id="blog" className="py-16 px-6 bg-white relative overflow-hidden">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-          <div className="max-w-2xl">
-            <h4 className="text-accent font-bold uppercase tracking-[0.3em] text-[10px] mb-4">Latest Insights</h4>
-            <h2 className="text-dark text-5xl md:text-7xl font-bold uppercase font-sans-condensed leading-[0.9]">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-10 gap-6">
+          <div className="max-w-xl">
+            <h4 className="text-accent font-bold uppercase tracking-[0.3em] text-[8px] mb-2">Latest Insights</h4>
+            <h2 className="text-dark text-4xl md:text-5xl font-bold uppercase font-sans-condensed leading-[0.9]">
               IronOak <span className="text-accent italic font-serif lowercase">Knowledge</span>
             </h2>
           </div>
           
-          <div className="flex gap-4">
+          <div className="flex gap-3">
             <button 
               onClick={() => scroll('left')}
-              className="w-14 h-14 rounded-full border border-dark/10 flex items-center justify-center text-dark hover:bg-dark hover:text-white transition-all active:scale-90"
+              className="w-10 h-10 rounded-full border border-dark/10 flex items-center justify-center text-dark hover:bg-dark hover:text-white transition-all active:scale-90"
             >
-              <ArrowLeft size={20} />
+              <ArrowLeft size={16} />
             </button>
             <button 
               onClick={() => scroll('right')}
-              className="w-14 h-14 rounded-full border border-dark/10 flex items-center justify-center text-dark hover:bg-dark hover:text-white transition-all active:scale-90"
+              className="w-10 h-10 rounded-full border border-dark/10 flex items-center justify-center text-dark hover:bg-dark hover:text-white transition-all active:scale-90"
             >
-              <ArrowRight size={20} />
+              <ArrowRight size={16} />
             </button>
           </div>
         </div>
 
         <div 
           ref={scrollRef}
-          className="flex gap-6 overflow-x-auto pb-12 hide-scrollbar snap-x"
+          className="flex gap-4 overflow-x-auto pb-8 hide-scrollbar snap-x"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           {blogs.map((blog) => (
             <article 
               key={blog.id} 
-              className="min-w-[300px] md:min-w-[450px] bg-bg/30 rounded-[2.5rem] overflow-hidden group snap-start border border-dark/5"
+              className="min-w-[280px] md:min-w-[380px] bg-bg/30 rounded-[2rem] overflow-hidden group snap-start border border-dark/5"
             >
-              <div className="aspect-[16/10] overflow-hidden relative">
+              <div className="aspect-[16/9] overflow-hidden relative">
                 <img 
                   src={getImageUrl(blog.image) || 'https://images.unsplash.com/photo-1509391366360-fe5bb60213ad?q=80&w=1000'} 
                   alt={blog.title}
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute top-6 left-6 bg-accent text-primary text-[10px] font-bold uppercase tracking-widest px-4 py-2 rounded-full">
-                  Update
-                </div>
               </div>
               
-              <div className="p-8 md:p-10 space-y-6">
-                <div className="flex items-center gap-6 text-[10px] text-dark/40 uppercase tracking-widest font-bold">
+              <div className="p-6 md:p-8 space-y-4">
+                <div className="flex items-center gap-4 text-[9px] text-dark/40 uppercase tracking-widest font-bold">
                   <span className="flex items-center gap-2">
-                    <Calendar size={12} className="text-accent" />
+                    <Calendar size={10} className="text-accent" />
                     {blog.date}
-                  </span>
-                  <span className="flex items-center gap-2">
-                    <User size={12} className="text-accent" />
-                    By IronOak
                   </span>
                 </div>
                 
-                <h3 className="text-2xl md:text-3xl font-bold font-sans-condensed group-hover:text-accent transition-colors leading-tight">
+                <h3 className="text-xl md:text-2xl font-bold font-sans-condensed group-hover:text-accent transition-colors leading-tight line-clamp-2">
                   {blog.title}
                 </h3>
                 
-                <p className="text-dark/60 text-sm leading-relaxed line-clamp-3">
+                <p className="text-dark/60 text-xs leading-relaxed line-clamp-2">
                   {blog.excerpt}
                 </p>
                 
-                <button className="flex items-center gap-4 text-[10px] font-bold uppercase tracking-widest text-accent group-hover:gap-6 transition-all">
+                <button 
+                  onClick={() => onReadMore(blog)}
+                  className="flex items-center gap-3 text-[9px] font-bold uppercase tracking-widest text-accent group-hover:gap-5 transition-all"
+                >
                   Read Full Article
-                  <ArrowRight size={14} />
+                  <ArrowRight size={12} />
                 </button>
               </div>
             </article>

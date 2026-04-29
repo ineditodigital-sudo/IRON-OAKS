@@ -12,6 +12,7 @@ import SolarCalculator from './components/SolarCalculator';
 import About from './components/About';
 import Partners from './components/Partners';
 import BlogSection from './components/BlogSection';
+import BlogModal from './components/BlogModal';
 import Footer from './components/Footer';
 import AdminLogin from './components/AdminLogin';
 import AdminPanel from './components/AdminPanel';
@@ -27,6 +28,7 @@ function MainSite() {
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [showCancellation, setShowCancellation] = useState(false);
+  const [selectedBlog, setSelectedBlog] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -80,7 +82,7 @@ function MainSite() {
       <SolarCalculator />
       <About data={content.about} />
       <Partners />
-      <BlogSection blogs={content.blogs} />
+      <BlogSection blogs={content.blogs} onReadMore={(blog) => setSelectedBlog(blog)} />
       <Footer 
         data={content.footer}
         onPrivacyClick={() => setShowPrivacy(true)} 
@@ -88,6 +90,7 @@ function MainSite() {
         onCancellationClick={() => setShowCancellation(true)}
       />
 
+      {selectedBlog && <BlogModal blog={selectedBlog} onClose={() => setSelectedBlog(null)} />}
       {showPrivacy && <PrivacyPolicy onClose={() => setShowPrivacy(false)} />}
       {showTerms && <TermsOfService onClose={() => setShowTerms(false)} />}
       {showCancellation && <CancellationPolicy onClose={() => setShowCancellation(false)} />}

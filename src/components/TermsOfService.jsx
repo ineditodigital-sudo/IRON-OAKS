@@ -1,16 +1,39 @@
+import { useEffect, useRef } from 'react';
 import { X } from 'lucide-react';
+import { gsap } from 'gsap';
 
 export default function TermsOfService({ onClose }) {
+  const modalRef = useRef(null);
+  const contentRef = useRef(null);
+
+  useEffect(() => {
+    const tl = gsap.timeline();
+    tl.fromTo(modalRef.current, { opacity: 0 }, { opacity: 1, duration: 0.4 })
+      .fromTo(contentRef.current, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: "power3.out" }, "-=0.2");
+
+    document.body.style.overflow = 'hidden';
+    return () => { document.body.style.overflow = 'unset'; };
+  }, []);
+
+  const handleClose = () => {
+    const tl = gsap.timeline({ onComplete: onClose });
+    tl.to(contentRef.current, { y: 30, opacity: 0, duration: 0.3 })
+      .to(modalRef.current, { opacity: 0, duration: 0.3 }, "-=0.1");
+  };
+
   return (
-    <div className="fixed inset-0 z-[100] bg-primary overflow-y-auto pt-32 pb-24 px-6 md:px-20">
+    <div 
+      ref={modalRef}
+      className="fixed inset-0 z-[100] bg-primary overflow-y-auto pt-32 pb-24 px-6 md:px-20"
+    >
       <button 
-        onClick={onClose}
+        onClick={handleClose}
         className="fixed top-8 right-8 z-[110] bg-white/10 p-4 rounded-full text-white hover:bg-white/20 transition-all"
       >
         <X className="w-6 h-6" />
       </button>
 
-      <div className="max-w-4xl mx-auto text-white/80 font-light leading-relaxed">
+      <div ref={contentRef} className="max-w-4xl mx-auto text-white/80 font-light leading-relaxed">
         <h1 className="text-4xl md:text-6xl font-bold text-white mb-4 font-sans-condensed uppercase">Terms of Service</h1>
         <p className="text-accent font-bold mb-12">Last updated: August 26, 2025</p>
 
