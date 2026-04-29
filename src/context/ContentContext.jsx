@@ -8,7 +8,7 @@ export function ContentProvider({ children }) {
 
   const fetchContent = async () => {
     try {
-      const response = await fetch('api/cms.php');
+      const response = await fetch('/api/cms.php');
       const data = await response.json();
       setContent(data);
     } catch (error) {
@@ -24,7 +24,7 @@ export function ContentProvider({ children }) {
 
   const saveContent = async (newData, token) => {
     try {
-      const response = await fetch('api/cms.php', {
+      const response = await fetch('/api/cms.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

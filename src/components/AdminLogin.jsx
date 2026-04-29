@@ -14,7 +14,7 @@ export default function AdminLogin() {
     setError('');
 
     try {
-      const response = await fetch('api/cms.php', {
+      const response = await fetch('/api/cms.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'login', password })
