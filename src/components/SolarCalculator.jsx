@@ -426,7 +426,6 @@ export default function SolarCalculator() {
                 </div>
               )}
             </div>
-            </div>
           </div>
         </div>
       )}
