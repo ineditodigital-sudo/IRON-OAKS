@@ -183,12 +183,14 @@ export default function AdminPanel() {
                     icon={Video} 
                     value={localData.hero.videoUrl} 
                     onUpload={(e) => handleImageUpload(e, 'hero.videoUrl')} 
+                    onRemove={() => updateNestedData('hero.videoUrl', '')}
                   />
                   <MediaUpload 
                     label="Fallback Image" 
                     icon={ImageIcon} 
                     value={localData.hero.fallbackImage} 
                     onUpload={(e) => handleImageUpload(e, 'hero.fallbackImage')} 
+                    onRemove={() => updateNestedData('hero.fallbackImage', '')}
                   />
                 </div>
               </Section>
@@ -199,6 +201,7 @@ export default function AdminPanel() {
                   icon={Video} 
                   value={localData.about.videoUrl} 
                   onUpload={(e) => handleImageUpload(e, 'about.videoUrl')} 
+                  onRemove={() => updateNestedData('about.videoUrl', '')}
                 />
               </Section>
 
@@ -236,6 +239,11 @@ export default function AdminPanel() {
                         icon={ImageIcon} 
                         value={service.image} 
                         onUpload={(e) => handleImageUpload(e, `services.${index}.image`)} 
+                        onRemove={() => {
+                          const newServices = [...localData.services];
+                          newServices[index].image = '';
+                          setLocalData({ ...localData, services: newServices });
+                        }}
                       />
                     </div>
                   </div>
@@ -268,7 +276,20 @@ export default function AdminPanel() {
                   <div key={blog.id} className="glass rounded-[2rem] p-6 flex flex-col md:flex-row gap-6 items-start group relative">
                     <div className="w-full md:w-32 h-32 rounded-2xl bg-white/5 overflow-hidden relative shrink-0">
                       {blog.image ? (
-                        <img src={getImageUrl(blog.image)} className="w-full h-full object-cover" />
+                        <>
+                          <img src={getImageUrl(blog.image)} className="w-full h-full object-cover" />
+                          <button 
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const newBlogs = [...localData.blogs];
+                              newBlogs[index].image = '';
+                              setLocalData({ ...localData, blogs: newBlogs });
+                            }}
+                            className="absolute top-2 right-2 p-1.5 rounded-lg bg-red-400 text-white shadow-lg hover:scale-110 transition-all z-10"
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        </>
                       ) : (
                         <div className="w-full h-full flex items-center justify-center text-white/10"><ImageIcon size={32} /></div>
                       )}
@@ -339,6 +360,7 @@ export default function AdminPanel() {
                     icon={ImageIcon} 
                     value={localData.seo.ogImage} 
                     onUpload={(e) => handleImageUpload(e, 'seo.ogImage')} 
+                    onRemove={() => updateNestedData('seo.ogImage', '')}
                   />
                 </div>
               </Section>
@@ -405,16 +427,30 @@ function TextArea({ label, value, onChange }) {
   );
 }
 
-function MediaUpload({ label, icon: Icon, value, onUpload }) {
+function MediaUpload({ label, icon: Icon, value, onUpload, onRemove }) {
   return (
     <div className="space-y-2">
       <label className="text-white/40 text-[10px] uppercase tracking-widest font-bold ml-1">{label}</label>
       <div className="relative group">
         <div className="w-full bg-white/5 border border-dashed border-white/20 rounded-2xl p-6 flex flex-col items-center justify-center text-center transition-all group-hover:border-accent/50 group-hover:bg-accent/5">
           {value ? (
-            <div className="w-full space-y-4">
+            <div className="w-full space-y-4 relative">
               <div className="text-[10px] text-white/60 truncate max-w-full font-mono bg-black/30 p-2 rounded-lg">{value}</div>
-              <button className="text-accent text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors">Change File</button>
+              <div className="flex items-center justify-center gap-4">
+                <button className="text-accent text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors">Change File</button>
+                {onRemove && (
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onRemove();
+                    }}
+                    className="p-2 rounded-lg bg-red-400/10 text-red-400 hover:bg-red-400 hover:text-white transition-all z-10"
+                  >
+                    <Trash2 size={14} />
+                  </button>
+                )}
+              </div>
             </div>
           ) : (
             <>
