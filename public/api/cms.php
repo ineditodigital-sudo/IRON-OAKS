@@ -23,7 +23,7 @@ if ($method === 'GET') {
 }
 
 if ($method === 'POST') {
-    $input = json_decode(file_get_contents('php_input'), true);
+    $input = json_decode(file_get_contents('php://input'), true);
     
     // Login
     if (isset($input['action']) && $input['action'] === 'login') {

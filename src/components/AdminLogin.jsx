@@ -20,16 +20,24 @@ export default function AdminLogin() {
         body: JSON.stringify({ action: 'login', password })
       });
 
+      if (!response.ok) {
+        const text = await response.text();
+        console.error('Server response not OK:', text);
+        setError(`Server error: ${response.status}`);
+        return;
+      }
+
       const data = await response.json();
 
-      if (response.ok) {
+      if (data.success) {
         localStorage.setItem('adminToken', data.token);
         navigate('/admin/dashboard');
       } else {
         setError(data.error || 'Login failed');
       }
     } catch (err) {
-      setError('Connection error');
+      console.error('Fetch error:', err);
+      setError('Connection error - check console');
     } finally {
       setIsLoading(false);
     }
