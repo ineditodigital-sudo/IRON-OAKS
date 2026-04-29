@@ -30,13 +30,13 @@ export default function Navbar() {
             : 'bg-transparent text-white'}
         `}
       >
-        <div className="flex items-center">
+        <a href="#" className="flex items-center hover:opacity-80 transition-opacity">
           <img 
             src="https://imagenes.inedito.digital/IRONOAK%20POWER/LOGO-IRONOAK-AZUL.svg" 
             alt="Iron Oak Power" 
             className={`h-10 md:h-12 w-auto transition-all duration-500 ${(isScrolled || isMenuOpen) ? '' : 'brightness-0 invert'}`}
           />
-        </div>
+        </a>
         
         {/* Desktop Links */}
         <div className="hidden md:flex items-center gap-8 text-sm font-medium uppercase tracking-widest">
