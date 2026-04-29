@@ -8,7 +8,7 @@ import service3 from '../assets/images/service-3.png';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function Services() {
+export default function Services({ data }) {
   const containerRef = useRef(null);
   useEffect(() => {
     let ctx = gsap.context(() => {
@@ -42,28 +42,9 @@ export default function Services() {
     }, containerRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [data]);
 
-  const services = [
-    {
-      title: "Residential Solar Installations",
-      desc: "We don’t just install your system and walk away. Our ongoing maintenance services ensure your solar and energy systems are performing at their best — year after year. With real-time expert support, you can feel confident in your investment.",
-      image: service1,
-      tag: "01 / RESIDENTIAL SOLUTIONS"
-    },
-    {
-      title: "Commercial Solar Installations",
-      desc: "We design and install custom solar energy systems that reduce your reliance on the grid and lower your long-term energy expenses. From rooftop arrays to ground-mounted systems, our team delivers solutions that are built to perform — and built to last.",
-      image: service2,
-      tag: "02 / COMMERCIAL INFRASTRUCTURE"
-    },
-    {
-      title: "Project Consulting & Development Support",
-      desc: "From feasibility assessments to permitting and incentive navigation, Iron Oak Power provides the guidance you need to bring your project to life. Our team works closely with property owners, developers, and business leaders to streamline the process and deliver results.",
-      image: service3,
-      tag: "03 / CONSULTING & SUPPORT"
-    }
-  ];
+  const services = data || [];
 
   return (
     <section id="services" ref={containerRef} className="bg-bg text-primary pt-24 pb-20">
@@ -102,7 +83,7 @@ export default function Services() {
               <div className="relative h-full flex flex-col justify-end p-8 md:p-10">
                 <div className="mb-6">
                   <span className="inline-block bg-accent/20 backdrop-blur-md border border-accent/30 px-3 py-1.5 text-accent text-[9px] md:text-[10px] font-bold tracking-[0.3em] uppercase mb-6 transform transition-all duration-500 group-hover:translate-x-2">
-                    {service.tag.split(' / ')[1]}
+                    {service.tag.includes(' / ') ? service.tag.split(' / ')[1] : service.tag}
                   </span>
                   <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight uppercase font-sans-condensed">
                     {service.title}

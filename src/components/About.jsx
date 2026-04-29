@@ -6,7 +6,7 @@ import { Award, MessagesSquare, HeartHandshake } from 'lucide-react';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export default function About() {
+export default function About({ data }) {
   const containerRef = useRef(null);
   const textRef = useRef(null);
   const videoRef = useRef(null);
@@ -34,18 +34,22 @@ export default function About() {
     
     // HLS Support for Video
     const video = videoRef.current;
-    const videoSrc = "https://video.squarespace-cdn.com/content/v1/685d9c11e3d5cf3b64cda10e/29eaaae8-599d-4008-b7e2-764e69efbe26/playlist.m3u8";
+    const videoSrc = data?.videoUrl || "https://video.squarespace-cdn.com/content/v1/685d9c11e3d5cf3b64cda10e/29eaaae8-599d-4008-b7e2-764e69efbe26/playlist.m3u8";
 
-    if (Hls.isSupported()) {
-      const hls = new Hls();
-      hls.loadSource(videoSrc);
-      hls.attachMedia(video);
-    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    if (videoSrc.endsWith('.m3u8')) {
+      if (Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(videoSrc);
+        hls.attachMedia(video);
+      } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+        video.src = videoSrc;
+      }
+    } else {
       video.src = videoSrc;
     }
 
     return () => ctx.revert();
-  }, []);
+  }, [data]);
 
   return (
     <section 

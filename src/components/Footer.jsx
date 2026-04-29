@@ -1,18 +1,17 @@
 import { Mail, Phone, MapPin, Camera, Globe, MessageSquare } from 'lucide-react';
 
-export default function Footer({ onPrivacyClick, onTermsClick, onCancellationClick }) {
+export default function Footer({ data, onPrivacyClick, onTermsClick, onCancellationClick }) {
   return (
     <footer className="bg-primary text-white px-8 md:px-20 pt-32 pb-12 overflow-hidden relative">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 mb-24">
           <div>
             <h2 className="text-4xl md:text-6xl font-sans-condensed font-bold uppercase mb-8 leading-tight">
-              Let's build the <br />
-              <span className="text-accent italic font-serif">Energy future</span> together
+              {data?.title || "Let's build the"} <br />
+              <span className="text-accent italic font-serif">{data?.italic || "Energy future"}</span> {data?.titleSuffix || "together"}
             </h2>
             <p className="text-white/40 max-w-md font-metrics text-lg">
-              Partner with the industry leaders in sustainable power infrastructure. 
-              Efficiency, durability, and innovation at every scale.
+              {data?.description || "Partner with the industry leaders in sustainable power infrastructure. Efficiency, durability, and innovation at every scale."}
             </p>
           </div>
 

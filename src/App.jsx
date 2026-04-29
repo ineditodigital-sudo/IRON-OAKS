@@ -1,33 +1,41 @@
 import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { HelmetProvider, Helmet } from 'react-helmet-async';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+import { ContentProvider, useContent } from './context/ContentContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Services from './components/Services';
 import SolarCalculator from './components/SolarCalculator';
 import About from './components/About';
 import Partners from './components/Partners';
+import BlogSection from './components/BlogSection';
 import Footer from './components/Footer';
+import AdminLogin from './components/AdminLogin';
+import AdminPanel from './components/AdminPanel';
+
 import PrivacyPolicy from './components/PrivacyPolicy';
 import TermsOfService from './components/TermsOfService';
 import CancellationPolicy from './components/CancellationPolicy';
 
 gsap.registerPlugin(ScrollTrigger);
 
-function App() {
+function MainSite() {
+  const { content, loading } = useContent();
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTerms, setShowTerms] = useState(false);
   const [showCancellation, setShowCancellation] = useState(false);
 
   useEffect(() => {
-    // Force scroll to top on load
     window.scrollTo(0, 0);
   }, []);
 
   useEffect(() => {
-    // Global GSAP Context
+    if (loading || !content) return;
+
     let ctx = gsap.context(() => {
-      // Global section reveals
       const sections = document.querySelectorAll('section');
       sections.forEach(section => {
         gsap.from(section, {
@@ -45,17 +53,36 @@ function App() {
     });
 
     return () => ctx.revert();
-  }, []);
+  }, [loading, content]);
+
+  if (loading || !content) {
+    return (
+      <div className="min-h-screen bg-dark flex items-center justify-center">
+        <div className="text-accent font-bold uppercase tracking-[0.5em] animate-pulse">IronOak Power</div>
+      </div>
+    );
+  }
 
   return (
-    <main className="relative">
+    <>
+      <Helmet>
+        <title>{content.seo.title}</title>
+        <meta name="description" content={content.seo.description} />
+        <meta name="keywords" content={content.seo.keywords} />
+        <meta property="og:title" content={content.seo.title} />
+        <meta property="og:description" content={content.seo.description} />
+        <meta property="og:image" content={content.seo.ogImage} />
+      </Helmet>
+
       <Navbar />
-      <Hero />
-      <Services />
+      <Hero data={content.hero} />
+      <Services data={content.services} />
       <SolarCalculator />
-      <About />
+      <About data={content.about} />
       <Partners />
+      <BlogSection blogs={content.blogs} />
       <Footer 
+        data={content.footer}
         onPrivacyClick={() => setShowPrivacy(true)} 
         onTermsClick={() => setShowTerms(true)}
         onCancellationClick={() => setShowCancellation(true)}
@@ -64,7 +91,24 @@ function App() {
       {showPrivacy && <PrivacyPolicy onClose={() => setShowPrivacy(false)} />}
       {showTerms && <TermsOfService onClose={() => setShowTerms(false)} />}
       {showCancellation && <CancellationPolicy onClose={() => setShowCancellation(false)} />}
-    </main>
+    </>
+  );
+}
+
+function App() {
+  return (
+    <HelmetProvider>
+      <ContentProvider>
+        <Router>
+          <Routes>
+            <Route path="/" element={<MainSite />} />
+            <Route path="/admin" element={<AdminLogin />} />
+            <Route path="/admin/dashboard" element={<AdminPanel />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </Router>
+      </ContentProvider>
+    </HelmetProvider>
   );
 }
 

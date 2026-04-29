@@ -1,0 +1,63 @@
+{
+  "seo": {
+    "title": "Iron Oak Power | Premium Solar Infrastructure",
+    "description": "IronOak Power designs and builds durable solar systems for residential, commercial, and agricultural properties across Canada and the United States.",
+    "keywords": "Solar Energy, Solar Panels Canada, Sustainable Energy, IronOak Power, Solar Infrastructure",
+    "ogImage": "https://imagenes.inedito.digital/IRONOAK%20POWER/LOGO-IRONOAK-AZUL.svg"
+  },
+  "hero": {
+    "title": "Built to last.",
+    "italic": "Powered by nature",
+    "description": "At IronOak Power, we specialize in providing reliable, high-performance solar and energy solutions for commercial, industrial, and agricultural properties.",
+    "videoUrl": "",
+    "fallbackImage": "https://imagenes.inedito.digital/IRONOAK%20POWER/Gemini_Generated_Image_g6qwymg6qwymg6qw.webp"
+  },
+  "services": [
+    {
+      "id": 1,
+      "tag": "01 / RESIDENTIAL SOLUTIONS",
+      "title": "Residential Solar Installations",
+      "desc": "We don’t just install your system and walk away. Our ongoing maintenance services ensure your solar and energy systems are performing at their best — year after year. With real-time expert support, you can feel confident in your investment.",
+      "image": "https://imagenes.inedito.digital/IRONOAK%20POWER/RESIDENCIAL.png"
+    },
+    {
+      "id": 2,
+      "tag": "02 / COMMERCIAL INFRASTRUCTURE",
+      "title": "Commercial Solar Installations",
+      "desc": "We design and install custom solar energy systems that reduce your reliance on the grid and lower your long-term energy expenses. From rooftop arrays to ground-mounted systems, our team delivers solutions that are built to perform — and built to last.",
+      "image": "https://imagenes.inedito.digital/IRONOAK%20POWER/COMMERCIAL.png"
+    },
+    {
+      "id": 3,
+      "tag": "03 / CONSULTING & SUPPORT",
+      "title": "Project Consulting & Development Support",
+      "desc": "From feasibility assessments to permitting and incentive navigation, Iron Oak Power provides the guidance you need to bring your project to life. Our team works closely with property owners, developers, and business leaders to streamline the process and deliver results.",
+      "image": "https://imagenes.inedito.digital/IRONOAK%20POWER/CONSULTING.png"
+    }
+  ],
+  "about": {
+    "videoUrl": "https://imagenes.inedito.digital/IRONOAK%20POWER/ABOUT-US.mp4"
+  },
+  "footer": {
+    "title": "Let's Build the",
+    "italic": "Energy Future",
+    "titleSuffix": "Together",
+    "description": "Partner with the industry leaders in sustainable power infrastructure. Efficiency, durability, and innovation at every scale."
+  },
+  "blogs": [
+    {
+      "id": 1,
+      "title": "The Future of Solar Energy in Canada",
+      "excerpt": "Exploring the latest trends and government incentives for solar adoption in 2026.",
+      "image": "https://images.unsplash.com/photo-1509391366360-fe5bb60213ad?q=80&w=1000",
+      "date": "2026-04-20"
+    },
+    {
+      "id": 2,
+      "title": "Maintaining Your Solar Panels for Max Efficiency",
+      "excerpt": "A guide to keeping your solar investment performing at its peak year-round.",
+      "image": "https://images.unsplash.com/photo-1508514177221-188b1cf16e9d?q=80&w=1000",
+      "date": "2026-04-15"
+    }
+  ]
+}
