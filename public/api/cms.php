@@ -60,7 +60,7 @@ if ($method === 'POST') {
                 if (move_uploaded_file($file['tmp_name'], $target)) {
                     chmod($target, 0644); // Set readable permissions
                     // Return relative path to be handled by frontend helper
-                    $url = 'api/uploads/' . $filename; 
+                    $url = 'uploads/' . $filename; 
                     echo json_encode(["success" => true, "url" => $url]);
                 } else {
                     echo json_encode(["error" => "Upload failed"]);

@@ -5,8 +5,7 @@ import { gsap } from 'gsap';
 const getImageUrl = (url) => {
   if (!url) return '';
   if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/')) return url;
-  // If it's a relative path from the API, make it absolute from root
-  if (url.startsWith('api/uploads')) return '/' + url;
+  if (url.includes('uploads/')) return '/' + url.replace(/^\/+/, '');
   return url;
 };
 

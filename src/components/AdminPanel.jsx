@@ -21,11 +21,7 @@ import {
 const getImageUrl = (url) => {
   if (!url) return '';
   if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/')) return url;
-  // If it's a relative path from the API (e.g. api/uploads/...), ensure it's absolute from root
-  if (url.includes('api/uploads')) {
-    const cleanPath = url.startsWith('/') ? url : '/' + url;
-    return cleanPath;
-  }
+  if (url.includes('uploads/')) return '/' + url.replace(/^\/+/, '');
   return url;
 };
 
@@ -82,7 +78,7 @@ export default function AdminPanel() {
     formData.append('file', file);
 
     try {
-      const response = await fetch('/api/cms.php', {
+      const response = await fetch('api/cms.php', {
         method: 'POST',
         body: formData
       });

@@ -11,7 +11,7 @@ gsap.registerPlugin(ScrollTrigger);
 const getImageUrl = (url) => {
   if (!url) return '';
   if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/')) return url;
-  if (url.includes('api/uploads')) return '/' + url.replace(/^\/+/, '');
+  if (url.includes('uploads/')) return '/' + url.replace(/^\/+/, '');
   return url;
 };
 

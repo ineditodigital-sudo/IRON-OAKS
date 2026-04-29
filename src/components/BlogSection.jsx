@@ -5,9 +5,7 @@ import { ArrowLeft, ArrowRight, Calendar, User } from 'lucide-react';
 const getImageUrl = (url) => {
   if (!url) return '';
   if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/')) return url;
-  if (url.includes('api/uploads')) {
-    return url.startsWith('/') ? url : '/' + url;
-  }
+  if (url.includes('uploads/')) return '/' + url.replace(/^\/+/, '');
   return url;
 };
 
