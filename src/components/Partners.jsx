@@ -30,7 +30,7 @@ export default function Partners() {
     <section 
       ref={containerRef}
       id="partners"
-      className="bg-dark text-white py-20 px-6 md:px-12 scroll-mt-32"
+      className="bg-dark text-white py-20 px-6 md:px-12"
     >
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">

@@ -63,7 +63,7 @@ export default function Services({ data }) {
   };
 
   return (
-    <section id="services" ref={containerRef} className="bg-bg text-primary pt-16 pb-12 overflow-hidden scroll-mt-32">
+    <section id="services" ref={containerRef} className="bg-bg text-primary pt-16 pb-12 overflow-hidden">
       <div className="container mx-auto px-6 md:px-12">
         {/* Introduction Header */}
         <div className="services-header flex flex-col md:flex-row justify-between items-end mb-10 gap-8">
@@ -103,7 +103,7 @@ export default function Services({ data }) {
           {services.map((service, index) => (
             <div
               key={service.id || index}
-              className="service-card group relative min-w-[280px] md:min-w-[380px] aspect-[16/11] overflow-hidden rounded-[2rem] border border-white/10 bg-dark transition-shadow duration-500 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] snap-start"
+              className="service-card group relative min-w-[280px] md:min-w-[380px] min-h-[420px] overflow-hidden rounded-[2rem] border border-white/10 bg-dark transition-shadow duration-500 hover:shadow-[0_20px_40px_rgba(0,0,0,0.4)] snap-start"
             >
               {/* Background Image */}
               <div className="absolute inset-0 transition-transform duration-1000 group-hover:scale-110">
@@ -128,7 +128,7 @@ export default function Services({ data }) {
                   <div className="h-0.5 w-10 bg-accent transform origin-left transition-all duration-500 group-hover:w-full" />
                 </div>
 
-                <p className="text-white/60 text-xs md:text-sm leading-relaxed mb-6 opacity-100 md:opacity-0 translate-y-0 md:translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 line-clamp-3 overflow-hidden">
+                <p className="text-white/60 text-xs md:text-sm leading-relaxed mb-6 opacity-100 md:opacity-0 translate-y-0 md:translate-y-4 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 overflow-visible">
                   {service.desc || "Customized energy solutions for your specific needs."}
                 </p>
                 
