@@ -90,8 +90,8 @@ export default function AdminPanel() {
     const file = e.target.files[0];
     if (!file) return;
 
-    if (file.size > 4 * 1024 * 1024) {
-      alert('❌ Error: El peso máximo permitido es de 4MB.');
+    if (file.size > 6 * 1024 * 1024) {
+      alert('❌ Error: El peso máximo permitido es de 6MB.');
       e.target.value = '';
       return;
     }
@@ -251,7 +251,7 @@ export default function AdminPanel() {
                     value={localData.hero.videoUrl} 
                     onUpload={(e) => handleImageUpload(e, 'hero.videoUrl')} 
                     onRemove={() => updateNestedData('hero.videoUrl', '')}
-                    helpText="Format: 1920x1080 max | Duration: 8s max | Size: 4MB max"
+                    helpText="Format: 1920x1080 max | Duration: 8s max | Size: 6MB max"
                   />
                   <MediaUpload 
                     label="Fallback Image" 
@@ -270,7 +270,7 @@ export default function AdminPanel() {
                   value={localData.about.videoUrl} 
                   onUpload={(e) => handleImageUpload(e, 'about.videoUrl')} 
                   onRemove={() => updateNestedData('about.videoUrl', '')}
-                  helpText="Format: 1920x1080 max | Duration: 8s max | Size: 4MB max"
+                  helpText="Format: 1920x1080 max | Duration: 8s max | Size: 6MB max"
                 />
               </Section>
 
