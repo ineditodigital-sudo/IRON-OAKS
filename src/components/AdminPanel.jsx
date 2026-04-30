@@ -159,26 +159,24 @@ export default function AdminPanel() {
       {/* Sidebar Toggle (Mobile) */}
       <button 
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="md:hidden fixed bottom-6 right-6 z-[100] w-14 h-14 bg-accent rounded-full shadow-2xl flex items-center justify-center text-primary"
+        className="md:hidden fixed top-6 left-6 z-[100] w-12 h-12 bg-accent rounded-xl shadow-2xl flex items-center justify-center text-primary"
       >
-        {isSidebarOpen ? <Plus className="rotate-45" /> : <LayoutDashboard size={24} />}
+        {isSidebarOpen ? <Plus className="rotate-45" /> : <LayoutDashboard size={20} />}
       </button>
 
       {/* Sidebar */}
       <aside className={`
-        ${isSidebarOpen ? 'w-full md:w-72 translate-x-0' : 'w-0 md:w-20 -translate-x-full md:translate-x-0'}
-        fixed md:sticky top-0 h-screen bg-[#161616] border-r border-white/5 flex flex-col p-6 transition-all duration-500 z-[90] overflow-hidden
+        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+        fixed md:sticky top-0 h-screen w-[280px] md:w-72 bg-[#161616] border-r border-white/5 flex flex-col p-6 transition-all duration-500 z-[90] overflow-hidden
       `}>
-        <div className="flex items-center gap-4 mb-10">
+        <div className={`flex items-center gap-4 mb-10 transition-all duration-500 ${isSidebarOpen ? 'pl-16 md:pl-0' : ''}`}>
           <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center shrink-0">
             <Globe className="text-primary w-6 h-6" />
           </div>
-          {isSidebarOpen && (
-            <div className="transition-opacity duration-300">
-              <h2 className="text-lg font-bold uppercase font-sans-condensed leading-none">IronOak</h2>
-              <span className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Admin Panel</span>
-            </div>
-          )}
+          <div className="transition-opacity duration-300">
+            <h2 className="text-lg font-bold uppercase font-sans-condensed leading-none">IronOak</h2>
+            <span className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Admin Panel</span>
+          </div>
         </div>
 
         <nav className="flex-1 space-y-2">
@@ -194,47 +192,26 @@ export default function AdminPanel() {
               }`}
             >
               <tab.icon size={18} className="shrink-0" />
-              {isSidebarOpen && <span className="truncate">{tab.name}</span>}
-              {!isSidebarOpen && (
-                <div className="absolute left-20 bg-dark px-3 py-1 rounded-lg text-xs invisible group-hover:visible whitespace-nowrap z-[100] border border-white/10 shadow-xl">
-                  {tab.name}
-                </div>
-              )}
+              <span className="truncate">{tab.name}</span>
             </button>
           ))}
         </nav>
 
         <div className="pt-6 border-t border-white/5 space-y-3">
-          {isSidebarOpen ? (
-            <>
-              <button 
-                onClick={handleSave}
-                disabled={isSaving}
-                className="w-full bg-white text-primary py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
-              >
-                <Save size={14} />
-                {isSaving ? 'Saving...' : 'Save Changes'}
-              </button>
-              <button 
-                onClick={handleLogout}
-                className="w-full bg-white/5 text-red-400 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:bg-red-400/10 transition-all"
-              >
-                <LogOut size={14} />
-                Logout
-              </button>
-            </>
-          ) : (
-            <div className="flex flex-col gap-3">
-              <button onClick={handleSave} className="w-full h-10 flex items-center justify-center bg-white text-primary rounded-xl hover:scale-105 transition-all"><Save size={14} /></button>
-              <button onClick={handleLogout} className="w-full h-10 flex items-center justify-center bg-white/5 text-red-400 rounded-xl hover:bg-red-400/10 transition-all"><LogOut size={14} /></button>
-            </div>
-          )}
-          
           <button 
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="hidden md:flex w-full items-center justify-center py-2 text-white/20 hover:text-white transition-colors"
+            onClick={handleSave}
+            disabled={isSaving}
+            className="w-full bg-white text-primary py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
           >
-            <ChevronRight className={`transition-transform duration-500 ${isSidebarOpen ? 'rotate-180' : ''}`} size={16} />
+            <Save size={14} />
+            {isSaving ? 'Saving...' : 'Save Changes'}
+          </button>
+          <button 
+            onClick={handleLogout}
+            className="w-full bg-white/5 text-red-400 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:bg-red-400/10 transition-all"
+          >
+            <LogOut size={14} />
+            Logout
           </button>
         </div>
       </aside>
@@ -248,7 +225,7 @@ export default function AdminPanel() {
       )}
 
       {/* Main Content */}
-      <main className={`flex-1 p-6 md:p-12 transition-all duration-500 ${!isSidebarOpen ? 'md:pl-6' : ''}`}>
+      <main className="flex-1 p-6 md:p-12 transition-all duration-500">
         <header className="mb-12 flex justify-between items-end">
           <div>
             <h1 className="text-4xl font-bold uppercase font-sans-condensed tracking-tight">
