@@ -78,20 +78,22 @@ export default function Services({ data }) {
             </p>
           </div>
 
-          <div className="flex gap-3 mb-2">
-            <button 
-              onClick={() => scroll('left')}
-              className="w-10 h-10 rounded-full border border-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all active:scale-90"
-            >
-              <ArrowLeft className="w-4 h-4" />
-            </button>
-            <button 
-              onClick={() => scroll('right')}
-              className="w-10 h-10 rounded-full border border-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all active:scale-90"
-            >
-              <ArrowRight className="w-4 h-4" />
-            </button>
-          </div>
+          {services.length > 3 && (
+            <div className="flex gap-3 mb-2">
+              <button 
+                onClick={() => scroll('left')}
+                className="w-10 h-10 rounded-full border border-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all active:scale-90"
+              >
+                <ArrowLeft className="w-4 h-4" />
+              </button>
+              <button 
+                onClick={() => scroll('right')}
+                className="w-10 h-10 rounded-full border border-primary/10 flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all active:scale-90"
+              >
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
         </div>
 
         {/* Services Carousel */}
