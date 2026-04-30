@@ -550,6 +550,15 @@ function TextArea({ label, value, onChange }) {
 }
 
 function MediaUpload({ label, icon: Icon, value, onUpload, onRemove, helpText }) {
+  const isVideo = value && (
+    value.toLowerCase().endsWith('.mp4') || 
+    value.toLowerCase().endsWith('.webm') || 
+    value.toLowerCase().endsWith('.mov') ||
+    value.toLowerCase().endsWith('.ogg')
+  );
+  
+  const fullUrl = getImageUrl(value);
+
   return (
     <div className="space-y-2">
       <label className="text-white/30 text-[10px] uppercase tracking-widest font-bold ml-1">{label}</label>
@@ -557,6 +566,26 @@ function MediaUpload({ label, icon: Icon, value, onUpload, onRemove, helpText })
         <div className="w-full bg-black/40 border border-dashed border-white/10 rounded-2xl p-6 flex flex-col items-center justify-center text-center transition-all group-hover:border-accent/40 group-hover:bg-accent/5">
           {value ? (
             <div className="w-full space-y-4 relative">
+              <div className="w-full h-40 rounded-xl bg-black/60 overflow-hidden relative group/preview border border-white/5">
+                {isVideo ? (
+                  <video 
+                    src={fullUrl} 
+                    className="w-full h-full object-cover opacity-80 group-hover/preview:opacity-100 transition-opacity" 
+                    muted 
+                    loop 
+                    onMouseOver={e => e.target.play()} 
+                    onMouseOut={e => {
+                      e.target.pause();
+                      e.target.currentTime = 0;
+                    }} 
+                  />
+                ) : (
+                  <img src={fullUrl} className="w-full h-full object-cover opacity-80 group-hover/preview:opacity-100 transition-opacity" alt="Preview" />
+                )}
+                <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover/preview:opacity-100 transition-opacity pointer-events-none">
+                  <Upload size={24} className="text-white" />
+                </div>
+              </div>
               <div className="text-[10px] text-white/50 truncate max-w-full font-mono bg-black/40 p-2 rounded-lg border border-white/5">{value}</div>
               <div className="flex items-center justify-center gap-4">
                 <button className="text-accent text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors">Change File</button>
