@@ -289,35 +289,109 @@ export default function AdminPanel() {
 
           {activeTab === 'services' && (
             <div className="space-y-8">
-              {localData.services.map((service, index) => (
-                <Section key={service.id || index} title={`Service Card ${index + 1}`}>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <Input label="Tag" value={service.tag} onChange={(v) => {
-                      const newServices = [...localData.services];
-                      newServices[index].tag = v;
-                      setLocalData({ ...localData, services: newServices });
-                    }} />
-                    <Input label="Title" value={service.title} onChange={(v) => {
-                      const newServices = [...localData.services];
-                      newServices[index].title = v;
-                      setLocalData({ ...localData, services: newServices });
-                    }} />
-                    <div className="md:col-span-2">
-                      <MediaUpload 
-                        label="Card Image" 
-                        icon={ImageIcon} 
-                        value={service.image} 
-                        onUpload={(e) => handleImageUpload(e, `services.${index}.image`)} 
-                        onRemove={() => {
-                          const newServices = [...localData.services];
-                          newServices[index].image = '';
-                          setLocalData({ ...localData, services: newServices });
-                        }}
+              <div className="flex justify-between items-center bg-accent/10 border border-accent/20 p-6 rounded-[2rem]">
+                <div>
+                  <h3 className="text-xl font-bold uppercase font-sans-condensed">Manage Services</h3>
+                  <p className="text-accent/60 text-xs uppercase tracking-widest mt-1">Add, edit or remove service cards</p>
+                </div>
+                <button 
+                  onClick={() => {
+                    const newService = { id: Date.now(), tag: 'NEW SERVICE', title: 'Service Title', desc: 'Service description goes here...', image: '' };
+                    setLocalData({ ...localData, services: [...(localData.services || []), newService] });
+                  }}
+                  className="bg-accent text-primary p-4 rounded-2xl flex items-center gap-2 hover:scale-105 transition-all shadow-lg shadow-accent/20"
+                >
+                  <Plus size={18} />
+                  <span className="font-bold uppercase tracking-widest text-[10px]">Add Service</span>
+                </button>
+              </div>
+
+              <div className="grid grid-cols-1 gap-6">
+                {(localData.services || []).map((service, index) => (
+                  <div key={service.id || index} className="bg-[#1A1A1A] rounded-[2rem] p-6 flex flex-col md:flex-row gap-6 items-start group relative border border-white/5 shadow-xl">
+                    <div className="w-full md:w-48 h-60 rounded-2xl bg-black/40 overflow-hidden relative shrink-0">
+                      {service.image ? (
+                        <>
+                          <img src={getImageUrl(service.image)} className="w-full h-full object-cover opacity-80" alt="Service" />
+                          <button 
+                            onClick={(e) => {
+                              e.preventDefault();
+                              const newServices = [...localData.services];
+                              newServices[index].image = '';
+                              setLocalData({ ...localData, services: newServices });
+                            }}
+                            className="absolute top-2 right-2 p-1.5 rounded-lg bg-red-500/80 text-white shadow-lg hover:scale-110 transition-all z-10"
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        </>
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-white/10"><ImageIcon size={48} /></div>
+                      )}
+                      <input 
+                        type="file" 
+                        onChange={(e) => handleImageUpload(e, `services.${index}.image`)}
+                        className="absolute inset-0 opacity-0 cursor-pointer"
                       />
                     </div>
+                    
+                    <div className="flex-1 space-y-4 w-full relative">
+                      <button 
+                        onClick={() => {
+                          if (window.confirm('Delete this service?')) {
+                            const newServices = localData.services.filter((_, i) => i !== index);
+                            setLocalData({ ...localData, services: newServices });
+                          }
+                        }}
+                        className="absolute -top-2 -right-2 text-white/10 hover:text-red-400 transition-colors p-2"
+                        title="Delete Service"
+                      >
+                        <Trash2 size={18} />
+                      </button>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-white/30 text-[10px] uppercase tracking-widest font-bold block mb-1">Tag / Category</label>
+                          <input 
+                            value={service.tag} 
+                            onChange={(e) => {
+                              const newServices = [...localData.services];
+                              newServices[index].tag = e.target.value;
+                              setLocalData({ ...localData, services: newServices });
+                            }}
+                            className="w-full bg-black/40 border border-white/10 rounded-xl py-2 px-4 text-white outline-none focus:border-accent transition-all text-sm"
+                          />
+                        </div>
+                        <div>
+                          <label className="text-white/30 text-[10px] uppercase tracking-widest font-bold block mb-1">Service Title</label>
+                          <input 
+                            value={service.title} 
+                            onChange={(e) => {
+                              const newServices = [...localData.services];
+                              newServices[index].title = e.target.value;
+                              setLocalData({ ...localData, services: newServices });
+                            }}
+                            className="w-full bg-black/40 border border-white/10 rounded-xl py-2 px-4 text-white outline-none focus:border-accent transition-all text-sm font-bold"
+                          />
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <label className="text-white/30 text-[10px] uppercase tracking-widest font-bold block mb-1">Description</label>
+                        <textarea 
+                          value={service.desc} 
+                          onChange={(e) => {
+                            const newServices = [...localData.services];
+                            newServices[index].desc = e.target.value;
+                            setLocalData({ ...localData, services: newServices });
+                          }}
+                          className="w-full bg-black/40 border border-white/10 rounded-xl py-3 px-4 text-white outline-none focus:border-accent transition-all text-sm min-h-[100px]"
+                        />
+                      </div>
+                    </div>
                   </div>
-                </Section>
-              ))}
+                ))}
+              </div>
             </div>
           )}
 
