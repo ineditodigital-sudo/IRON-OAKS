@@ -141,56 +141,103 @@ export default function AdminPanel() {
     { id: 'seo', name: 'SEO Settings', icon: Search }
   ];
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
   return (
-    <div className="min-h-screen bg-[#111] text-white flex flex-col md:flex-row">
+    <div className="min-h-screen bg-[#111] text-white flex flex-col md:flex-row relative">
+      {/* Sidebar Toggle (Mobile) */}
+      <button 
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        className="md:hidden fixed bottom-6 right-6 z-[100] w-14 h-14 bg-accent rounded-full shadow-2xl flex items-center justify-center text-primary"
+      >
+        {isSidebarOpen ? <Plus className="rotate-45" /> : <LayoutDashboard size={24} />}
+      </button>
+
       {/* Sidebar */}
-      <aside className="w-full md:w-72 bg-dark border-r border-white/5 flex flex-col p-6 space-y-8">
-        <div className="flex items-center gap-4 mb-4">
-          <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center">
+      <aside className={`
+        ${isSidebarOpen ? 'w-full md:w-72 translate-x-0' : 'w-0 md:w-20 -translate-x-full md:translate-x-0'}
+        fixed md:sticky top-0 h-screen bg-[#161616] border-r border-white/5 flex flex-col p-6 transition-all duration-500 z-[90] overflow-hidden
+      `}>
+        <div className="flex items-center gap-4 mb-10">
+          <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center shrink-0">
             <Globe className="text-primary w-6 h-6" />
           </div>
-          <div>
-            <h2 className="text-lg font-bold uppercase font-sans-condensed leading-none">IronOak</h2>
-            <span className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Admin Panel</span>
-          </div>
+          {isSidebarOpen && (
+            <div className="transition-opacity duration-300">
+              <h2 className="text-lg font-bold uppercase font-sans-condensed leading-none">IronOak</h2>
+              <span className="text-[10px] text-white/40 uppercase tracking-widest font-bold">Admin Panel</span>
+            </div>
+          )}
         </div>
 
         <nav className="flex-1 space-y-2">
           {tabs.map(tab => (
             <button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id)}
-              className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-medium transition-all ${
+              onClick={() => {
+                setActiveTab(tab.id);
+                if (window.innerWidth < 768) setIsSidebarOpen(false);
+              }}
+              className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl text-sm font-medium transition-all group ${
                 activeTab === tab.id ? 'bg-accent text-primary' : 'hover:bg-white/5 text-white/60'
               }`}
             >
-              <tab.icon size={18} />
-              {tab.name}
+              <tab.icon size={18} className="shrink-0" />
+              {isSidebarOpen && <span className="truncate">{tab.name}</span>}
+              {!isSidebarOpen && (
+                <div className="absolute left-20 bg-dark px-3 py-1 rounded-lg text-xs invisible group-hover:visible whitespace-nowrap z-[100] border border-white/10 shadow-xl">
+                  {tab.name}
+                </div>
+              )}
             </button>
           ))}
         </nav>
 
         <div className="pt-6 border-t border-white/5 space-y-3">
+          {isSidebarOpen ? (
+            <>
+              <button 
+                onClick={handleSave}
+                disabled={isSaving}
+                className="w-full bg-white text-primary py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
+              >
+                <Save size={14} />
+                {isSaving ? 'Saving...' : 'Save Changes'}
+              </button>
+              <button 
+                onClick={handleLogout}
+                className="w-full bg-white/5 text-red-400 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:bg-red-400/10 transition-all"
+              >
+                <LogOut size={14} />
+                Logout
+              </button>
+            </>
+          ) : (
+            <div className="flex flex-col gap-3">
+              <button onClick={handleSave} className="w-full h-10 flex items-center justify-center bg-white text-primary rounded-xl hover:scale-105 transition-all"><Save size={14} /></button>
+              <button onClick={handleLogout} className="w-full h-10 flex items-center justify-center bg-white/5 text-red-400 rounded-xl hover:bg-red-400/10 transition-all"><LogOut size={14} /></button>
+            </div>
+          )}
+          
           <button 
-            onClick={handleSave}
-            disabled={isSaving}
-            className="w-full bg-white text-primary py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-50"
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            className="hidden md:flex w-full items-center justify-center py-2 text-white/20 hover:text-white transition-colors"
           >
-            <Save size={14} />
-            {isSaving ? 'Saving...' : 'Save Changes'}
-          </button>
-          <button 
-            onClick={handleLogout}
-            className="w-full bg-white/5 text-red-400 py-3 rounded-xl font-bold uppercase tracking-widest text-[10px] flex items-center justify-center gap-2 hover:bg-red-400/10 transition-all"
-          >
-            <LogOut size={14} />
-            Logout
+            <ChevronRight className={`transition-transform duration-500 ${isSidebarOpen ? 'rotate-180' : ''}`} size={16} />
           </button>
         </div>
       </aside>
 
+      {/* Overlay for mobile */}
+      {isSidebarOpen && (
+        <div 
+          onClick={() => setIsSidebarOpen(false)}
+          className="md:hidden fixed inset-0 bg-black/60 backdrop-blur-sm z-[85]"
+        />
+      )}
+
       {/* Main Content */}
-      <main className="flex-1 p-6 md:p-12 overflow-y-auto max-h-screen">
+      <main className={`flex-1 p-6 md:p-12 transition-all duration-500 ${!isSidebarOpen && 'md:pl-6'}`}>
         <header className="mb-12 flex justify-between items-end">
           <div>
             <h1 className="text-4xl font-bold uppercase font-sans-condensed tracking-tight">
