@@ -72,6 +72,47 @@ export default function AdminPanel() {
     const file = e.target.files[0];
     if (!file) return;
 
+    // Video validation
+    if (file.type.startsWith('video/')) {
+      // Size check (4MB)
+      if (file.size > 4 * 1024 * 1024) {
+        alert('❌ Error: El video no debe superar los 4MB.');
+        e.target.value = '';
+        return;
+      }
+
+      // Create video element to check duration and resolution
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.onloadedmetadata = function() {
+        window.URL.revokeObjectURL(video.src);
+        const duration = video.duration;
+        const width = video.videoWidth;
+        const height = video.videoHeight;
+
+        if (duration > 8.5) { // 8s with small margin
+          alert('❌ Error: La duración máxima permitida es de 8 segundos.');
+          e.target.value = '';
+          return;
+        }
+
+        if (width !== 1920 || height !== 1080) {
+          alert(`❌ Error: La resolución debe ser exactamente 1920x1080. Detectada: ${width}x${height}`);
+          e.target.value = '';
+          return;
+        }
+
+        // If valid, proceed with upload
+        performUpload(file, path);
+      };
+      video.src = URL.createObjectURL(file);
+    } else {
+      // For images, proceed normally
+      performUpload(file, path);
+    }
+  };
+
+  const performUpload = async (file, path) => {
     const formData = new FormData();
     formData.append('action', 'upload');
     formData.append('token', token);
@@ -86,7 +127,7 @@ export default function AdminPanel() {
       if (data.success) {
         updateNestedData(path, data.url);
       } else {
-        alert('Upload failed');
+        alert('Upload failed: ' + (data.message || 'Unknown error'));
       }
     } catch (err) {
       alert('Error uploading file');
@@ -184,6 +225,7 @@ export default function AdminPanel() {
                     value={localData.hero.videoUrl} 
                     onUpload={(e) => handleImageUpload(e, 'hero.videoUrl')} 
                     onRemove={() => updateNestedData('hero.videoUrl', '')}
+                    helpText="Format: 1920x1080 | Duration: 8s max | Size: 4MB max"
                   />
                   <MediaUpload 
                     label="Fallback Image" 
@@ -202,6 +244,7 @@ export default function AdminPanel() {
                   value={localData.about.videoUrl} 
                   onUpload={(e) => handleImageUpload(e, 'about.videoUrl')} 
                   onRemove={() => updateNestedData('about.videoUrl', '')}
+                  helpText="Format: 1920x1080 | Duration: 8s max | Size: 4MB max"
                 />
               </Section>
 
@@ -459,7 +502,7 @@ function TextArea({ label, value, onChange }) {
   );
 }
 
-function MediaUpload({ label, icon: Icon, value, onUpload, onRemove }) {
+function MediaUpload({ label, icon: Icon, value, onUpload, onRemove, helpText }) {
   return (
     <div className="space-y-2">
       <label className="text-white/30 text-[10px] uppercase tracking-widest font-bold ml-1">{label}</label>
@@ -497,6 +540,11 @@ function MediaUpload({ label, icon: Icon, value, onUpload, onRemove }) {
           className="absolute inset-0 opacity-0 cursor-pointer"
         />
       </div>
+      {helpText && (
+        <p className="text-[9px] text-white/20 uppercase tracking-widest leading-relaxed ml-1">
+          {helpText}
+        </p>
+      )}
     </div>
   );
 }
