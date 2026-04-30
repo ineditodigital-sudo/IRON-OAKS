@@ -273,11 +273,11 @@ export default function AdminPanel() {
 
               <div className="grid grid-cols-1 gap-4">
                 {localData.blogs.map((blog, index) => (
-                  <div key={blog.id} className="bg-[#D9D9D9] rounded-[2rem] p-6 flex flex-col md:flex-row gap-6 items-start group relative border border-white/10 shadow-lg">
-                    <div className="w-full md:w-32 h-32 rounded-2xl bg-black/5 overflow-hidden relative shrink-0">
+                  <div key={blog.id} className="bg-[#1A1A1A] rounded-[2rem] p-6 flex flex-col md:flex-row gap-6 items-start group relative border border-white/5 shadow-xl">
+                    <div className="w-full md:w-32 h-32 rounded-2xl bg-black/40 overflow-hidden relative shrink-0">
                       {blog.image ? (
                         <>
-                          <img src={getImageUrl(blog.image)} className="w-full h-full object-cover" />
+                          <img src={getImageUrl(blog.image)} className="w-full h-full object-cover opacity-80" />
                           <button 
                             onClick={(e) => {
                               e.preventDefault();
@@ -285,13 +285,13 @@ export default function AdminPanel() {
                               newBlogs[index].image = '';
                               setLocalData({ ...localData, blogs: newBlogs });
                             }}
-                            className="absolute top-2 right-2 p-1.5 rounded-lg bg-red-400 text-white shadow-lg hover:scale-110 transition-all z-10"
+                            className="absolute top-2 right-2 p-1.5 rounded-lg bg-red-500/80 text-white shadow-lg hover:scale-110 transition-all z-10"
                           >
                             <Trash2 size={12} />
                           </button>
                         </>
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center text-black/10"><ImageIcon size={32} /></div>
+                        <div className="w-full h-full flex items-center justify-center text-white/10"><ImageIcon size={32} /></div>
                       )}
                       <input 
                         type="file" 
@@ -308,7 +308,7 @@ export default function AdminPanel() {
                             setLocalData({ ...localData, blogs: newBlogs });
                           }
                         }}
-                        className="absolute -top-2 -right-2 text-black/20 hover:text-red-500 transition-colors p-2"
+                        className="absolute -top-2 -right-2 text-white/10 hover:text-red-400 transition-colors p-2"
                         title="Delete Post"
                       >
                         <Trash2 size={18} />
@@ -316,7 +316,7 @@ export default function AdminPanel() {
 
                       <div className="flex flex-wrap gap-4">
                         <div className="flex-1 min-w-[200px]">
-                          <label className="text-black/40 text-[10px] uppercase tracking-widest font-bold block mb-1">Title</label>
+                          <label className="text-white/30 text-[10px] uppercase tracking-widest font-bold block mb-1">Title</label>
                           <input 
                             value={blog.title} 
                             onChange={(e) => {
@@ -324,11 +324,11 @@ export default function AdminPanel() {
                               newBlogs[index].title = e.target.value;
                               setLocalData({ ...localData, blogs: newBlogs });
                             }}
-                            className="w-full bg-white/50 border border-black/10 rounded-xl py-2 px-4 text-black outline-none focus:border-accent focus:bg-white transition-all text-sm font-bold"
+                            className="w-full bg-black/40 border border-white/10 rounded-xl py-2 px-4 text-white outline-none focus:border-accent transition-all text-sm font-bold"
                           />
                         </div>
                         <div className="w-full md:w-32">
-                          <label className="text-black/40 text-[10px] uppercase tracking-widest font-bold block mb-1">Date</label>
+                          <label className="text-white/30 text-[10px] uppercase tracking-widest font-bold block mb-1">Date</label>
                           <input 
                             value={blog.date} 
                             onChange={(e) => {
@@ -336,13 +336,13 @@ export default function AdminPanel() {
                               newBlogs[index].date = e.target.value;
                               setLocalData({ ...localData, blogs: newBlogs });
                             }}
-                            className="w-full bg-white/50 border border-black/10 rounded-xl py-2 px-4 text-black outline-none focus:border-accent focus:bg-white transition-all text-sm"
+                            className="w-full bg-black/40 border border-white/10 rounded-xl py-2 px-4 text-white outline-none focus:border-accent transition-all text-sm"
                           />
                         </div>
                       </div>
                       
                       <div>
-                        <label className="text-black/40 text-[10px] uppercase tracking-widest font-bold block mb-1">Excerpt / Content</label>
+                        <label className="text-white/30 text-[10px] uppercase tracking-widest font-bold block mb-1">Excerpt / Content</label>
                         <textarea 
                           value={blog.excerpt} 
                           onChange={(e) => {
@@ -350,7 +350,7 @@ export default function AdminPanel() {
                             newBlogs[index].excerpt = e.target.value;
                             setLocalData({ ...localData, blogs: newBlogs });
                           }}
-                          className="w-full bg-white/50 border border-black/10 rounded-xl py-3 px-4 text-black outline-none focus:border-accent focus:bg-white transition-all text-sm min-h-[120px]"
+                          className="w-full bg-black/40 border border-white/10 rounded-xl py-3 px-4 text-white outline-none focus:border-accent transition-all text-sm min-h-[120px]"
                         />
                       </div>
                     </div>
@@ -418,7 +418,7 @@ function Section({ title, children }) {
       <h3 className="text-accent font-bold uppercase tracking-[0.3em] text-[10px] flex items-center gap-3">
         <span className="w-8 h-px bg-accent/20" /> {title}
       </h3>
-      <div className="bg-[#D9D9D9] rounded-[2rem] p-8 md:p-10 border border-white/10 shadow-xl">
+      <div className="bg-[#1A1A1A] rounded-[2rem] p-8 md:p-10 border border-white/5 shadow-2xl">
         {children}
       </div>
     </div>
@@ -428,11 +428,11 @@ function Section({ title, children }) {
 function Input({ label, value, onChange }) {
   return (
     <div className="space-y-2">
-      <label className="text-black/50 text-[10px] uppercase tracking-widest font-bold ml-1">{label}</label>
+      <label className="text-white/30 text-[10px] uppercase tracking-widest font-bold ml-1">{label}</label>
       <input 
         value={value} 
         onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-white/50 border border-black/10 rounded-2xl py-4 px-6 text-black outline-none focus:border-accent focus:bg-white transition-all text-sm placeholder:text-black/30"
+        className="w-full bg-black/40 border border-white/10 rounded-2xl py-4 px-6 text-white outline-none focus:border-accent transition-all text-sm placeholder:text-white/20"
       />
     </div>
   );
@@ -441,11 +441,11 @@ function Input({ label, value, onChange }) {
 function TextArea({ label, value, onChange }) {
   return (
     <div className="space-y-2">
-      <label className="text-black/50 text-[10px] uppercase tracking-widest font-bold ml-1">{label}</label>
+      <label className="text-white/30 text-[10px] uppercase tracking-widest font-bold ml-1">{label}</label>
       <textarea 
         value={value} 
         onChange={(e) => onChange(e.target.value)}
-        className="w-full bg-white/50 border border-black/10 rounded-2xl py-4 px-6 text-black outline-none focus:border-accent focus:bg-white transition-all text-sm min-h-[120px] placeholder:text-black/30"
+        className="w-full bg-black/40 border border-white/10 rounded-2xl py-4 px-6 text-white outline-none focus:border-accent transition-all text-sm min-h-[120px] placeholder:text-white/20"
       />
     </div>
   );
@@ -454,14 +454,14 @@ function TextArea({ label, value, onChange }) {
 function MediaUpload({ label, icon: Icon, value, onUpload, onRemove }) {
   return (
     <div className="space-y-2">
-      <label className="text-black/50 text-[10px] uppercase tracking-widest font-bold ml-1">{label}</label>
+      <label className="text-white/30 text-[10px] uppercase tracking-widest font-bold ml-1">{label}</label>
       <div className="relative group">
-        <div className="w-full bg-black/5 border border-dashed border-black/20 rounded-2xl p-6 flex flex-col items-center justify-center text-center transition-all group-hover:border-accent/50 group-hover:bg-accent/5">
+        <div className="w-full bg-black/40 border border-dashed border-white/10 rounded-2xl p-6 flex flex-col items-center justify-center text-center transition-all group-hover:border-accent/40 group-hover:bg-accent/5">
           {value ? (
             <div className="w-full space-y-4 relative">
-              <div className="text-[10px] text-black/60 truncate max-w-full font-mono bg-black/10 p-2 rounded-lg">{value}</div>
+              <div className="text-[10px] text-white/50 truncate max-w-full font-mono bg-black/40 p-2 rounded-lg border border-white/5">{value}</div>
               <div className="flex items-center justify-center gap-4">
-                <button className="text-accent text-[10px] font-bold uppercase tracking-widest hover:text-black transition-colors">Change File</button>
+                <button className="text-accent text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors">Change File</button>
                 {onRemove && (
                   <button 
                     onClick={(e) => {
@@ -469,7 +469,7 @@ function MediaUpload({ label, icon: Icon, value, onUpload, onRemove }) {
                       e.stopPropagation();
                       onRemove();
                     }}
-                    className="p-2 rounded-lg bg-red-400/10 text-red-500 hover:bg-red-500 hover:text-white transition-all z-10"
+                    className="p-2 rounded-lg bg-red-500/10 text-red-400 hover:bg-red-500 hover:text-white transition-all z-10"
                   >
                     <Trash2 size={14} />
                   </button>
@@ -478,8 +478,8 @@ function MediaUpload({ label, icon: Icon, value, onUpload, onRemove }) {
             </div>
           ) : (
             <>
-              <Icon className="text-black/20 mb-3" size={32} />
-              <p className="text-black/40 text-[10px] uppercase tracking-widest">Click or drag to upload</p>
+              <Icon className="text-white/10 mb-3" size={32} />
+              <p className="text-white/20 text-[10px] uppercase tracking-widest">Click or drag to upload</p>
             </>
           )}
         </div>
