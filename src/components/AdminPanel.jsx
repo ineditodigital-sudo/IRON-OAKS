@@ -286,6 +286,17 @@ export default function AdminPanel() {
                 </div>
               </Section>
 
+              <Section title="About Section Media">
+                <MediaUpload 
+                  label="About Video" 
+                  icon={Video} 
+                  value={localData.about.videoUrl} 
+                  onUpload={(e) => handleImageUpload(e, 'about.videoUrl')} 
+                  onRemove={() => updateNestedData('about.videoUrl', '')}
+                  helpText="Format: 1920x1080 max | Duration: 8s max | Size: 4MB max"
+                />
+              </Section>
+
               <Section title="Footer Content">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Input label="Footer Title" value={localData.footer.title} onChange={(v) => updateNestedData('footer.title', v)} />
