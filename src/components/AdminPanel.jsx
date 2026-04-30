@@ -159,17 +159,17 @@ export default function AdminPanel() {
       {/* Sidebar Toggle (Mobile) */}
       <button 
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-        className="md:hidden fixed top-6 left-6 z-[100] w-12 h-12 bg-accent rounded-xl shadow-2xl flex items-center justify-center text-primary"
+        className="md:hidden fixed top-6 right-6 z-[100] w-12 h-12 bg-accent rounded-xl shadow-2xl flex items-center justify-center text-primary"
       >
         {isSidebarOpen ? <Plus className="rotate-45" /> : <LayoutDashboard size={20} />}
       </button>
 
       {/* Sidebar */}
       <aside className={`
-        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
-        fixed md:sticky top-0 h-screen w-[280px] md:w-72 bg-[#161616] border-r border-white/5 flex flex-col p-6 transition-all duration-500 z-[90] overflow-hidden
+        ${isSidebarOpen ? 'translate-x-0' : 'translate-x-full md:translate-x-0'}
+        fixed md:sticky top-0 right-0 md:right-auto md:left-0 h-screen w-[280px] md:w-72 bg-[#161616] border-l md:border-l-0 md:border-r border-white/5 flex flex-col p-6 transition-all duration-500 z-[90] overflow-hidden
       `}>
-        <div className={`flex items-center gap-4 mb-10 transition-all duration-500 ${isSidebarOpen ? 'pl-16 md:pl-0' : ''}`}>
+        <div className={`flex items-center gap-4 mb-10 transition-all duration-500 ${isSidebarOpen && window.innerWidth < 768 ? 'pr-16 md:pr-0' : ''}`}>
           <div className="w-10 h-10 rounded-xl bg-accent flex items-center justify-center shrink-0">
             <Globe className="text-primary w-6 h-6" />
           </div>
