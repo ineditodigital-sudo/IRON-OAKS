@@ -84,7 +84,7 @@ export default function BlogModal({ blog, onClose }) {
           </h1>
 
           <div className="prose prose-invert prose-accent max-w-none">
-            <p className="text-white/80 text-xl font-light leading-relaxed whitespace-pre-line first-letter:text-5xl first-letter:font-bold first-letter:text-accent first-letter:mr-3 first-letter:float-left">
+            <p className="text-white/80 text-xl font-normal leading-relaxed whitespace-pre-line first-letter:text-5xl first-letter:font-bold first-letter:text-accent first-letter:mr-3 first-letter:float-left">
               {blog.excerpt}
             </p>
             

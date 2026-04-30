@@ -45,7 +45,7 @@ export default function Partners() {
                 className="h-20 md:h-28 w-auto brightness-0 invert opacity-90"
               />
             </div>
-            <p className="text-white/70 text-base md:text-lg leading-relaxed mb-8 font-light">
+            <p className="text-white/70 text-base md:text-lg leading-relaxed mb-8 font-normal">
               Superior Gen is a specialized solar design partner working with IronOak Power to deliver efficient, code-compliant, and high-quality solar system designs.
             </p>
             <div className="h-px w-full bg-white/10 mb-8" />

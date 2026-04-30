@@ -72,7 +72,7 @@ export default function Hero({ data }) {
           </h1>
           <h2 
             ref={subtitleRef}
-            className="text-accent text-6xl md:text-8xl lg:text-9xl font-serif italic font-light leading-none -mt-1 md:-mt-4"
+            className="text-accent text-6xl md:text-8xl lg:text-9xl font-serif italic font-normal leading-none -mt-1 md:-mt-4"
           >
             {data.italic || "Powered by nature"}
           </h2>

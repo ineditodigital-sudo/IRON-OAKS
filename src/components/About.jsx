@@ -88,7 +88,7 @@ export default function About({ data }) {
             >
               Who we are
             </h2>
-            <p className="text-primary/80 text-lg md:text-xl font-light leading-relaxed mb-10">
+            <p className="text-primary/80 text-lg md:text-xl font-normal leading-relaxed mb-10">
               IronOak Power designs and builds durable solar systems that empower homeowners and businesses to take control of their energy future.
             </p>
             
@@ -141,7 +141,7 @@ export default function About({ data }) {
                       <h4 className="text-white text-xl font-bold uppercase font-sans-condensed mb-2 tracking-tight">
                         {item.title}
                       </h4>
-                      <p className="text-white/40 text-sm font-light">
+                      <p className="text-white/40 text-sm font-normal">
                         {item.desc}
                       </p>
                     </div>

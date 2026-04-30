@@ -261,7 +261,7 @@ export default function SolarCalculator() {
             <span className="text-accent italic font-serif lowercase">Solar Potential</span>
           </h2>
           
-          <p className="text-white/40 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-light">
+          <p className="text-white/40 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-normal">
             Discover how much you can save with IronOak Power in just 60 seconds. Our algorithm calculates system size, costs, and lifetime savings.
           </p>
           
@@ -384,7 +384,7 @@ export default function SolarCalculator() {
                   <h2 className="text-white text-3xl md:text-6xl font-bold mb-6 font-sans-condensed uppercase tracking-tight">
                     Request <span className="text-accent">Sent</span>
                   </h2>
-                  <p className="text-white/60 text-lg md:text-xl mb-12 max-w-2xl font-light">
+                  <p className="text-white/60 text-lg md:text-xl mb-12 max-w-2xl font-normal">
                     Your consultation request has been sent successfully. Our team will contact you soon to discuss your solar potential.
                   </p>
                   <div className="flex justify-center">
@@ -405,7 +405,7 @@ export default function SolarCalculator() {
                   <h2 className="text-white text-2xl md:text-6xl font-bold mb-2 md:mb-6 font-sans-condensed uppercase text-center leading-tight">
                     Your Energy <span className="text-accent">Independence</span>
                   </h2>
-                  <p className="text-white/60 text-xs md:text-lg mb-6 md:mb-12 text-center max-w-2xl font-light">
+                  <p className="text-white/60 text-xs md:text-lg mb-6 md:mb-12 text-center max-w-2xl font-normal">
                     Estimated savings for your ${formData.bill}/mo bill.
                   </p>
 

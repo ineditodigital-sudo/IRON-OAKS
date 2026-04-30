@@ -59,11 +59,11 @@ export default function Services({ data }) {
         {/* Introduction Header */}
         <div className="services-header max-w-5xl mb-16">
           <span className="text-accent uppercase tracking-[0.4em] text-xs font-bold block mb-4">Our Services</span>
-          <h2 className="text-4xl md:text-6xl font-light leading-[1.1] mb-8 text-primary uppercase">
+          <h2 className="text-4xl md:text-6xl leading-[1.1] mb-8 text-primary uppercase">
             Powering Your <br />
             <span className="font-medium italic lowercase font-serif">Future Independence</span>
           </h2>
-          <p className="text-primary/70 text-base md:text-lg leading-relaxed max-w-3xl font-light">
+          <p className="text-primary/70 text-base md:text-lg leading-relaxed max-w-3xl">
             At IronOak Power, we specialize in providing reliable, high-performance solar and energy solutions for commercial, industrial, and agricultural properties.
           </p>
         </div>
