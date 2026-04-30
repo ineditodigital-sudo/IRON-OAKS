@@ -52,7 +52,7 @@ export default function AdminLogin() {
       </div>
 
       <div className="relative z-10 w-full max-w-md">
-        <div className="glass rounded-[2.5rem] p-8 md:p-12 border-white/5 shadow-2xl">
+        <div className="bg-[#1A1A1A] rounded-[2.5rem] p-8 md:p-12 border border-white/5 shadow-2xl">
           <div className="flex flex-col items-center text-center mb-10">
             <div className="w-16 h-16 rounded-2xl bg-accent/20 flex items-center justify-center mb-6">
               <ShieldCheck className="text-accent w-8 h-8" />
@@ -69,7 +69,7 @@ export default function AdminLogin() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="Access Password"
-                className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white outline-none focus:border-accent/50 focus:bg-white/10 transition-all"
+                className="w-full bg-black/40 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white outline-none focus:border-accent transition-all"
                 required
               />
             </div>
