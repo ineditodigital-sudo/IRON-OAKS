@@ -3,7 +3,7 @@ header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Content-Type: application/json");
 
-$password = "admin123"; // Default password, change this
+$password = "ironoakpower1314"; // Updated password
 $contentFile = 'content.json';
 $uploadDir = '../uploads/';
 
