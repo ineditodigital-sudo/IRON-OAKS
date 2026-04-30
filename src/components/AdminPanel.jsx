@@ -96,8 +96,8 @@ export default function AdminPanel() {
           return;
         }
 
-        if (width !== 1920 || height !== 1080) {
-          alert(`❌ Error: La resolución debe ser exactamente 1920x1080. Detectada: ${width}x${height}`);
+        if (width > 1920 || height > 1080) {
+          alert(`❌ Error: La resolución máxima permitida es de 1920x1080. Detectada: ${width}x${height}`);
           e.target.value = '';
           return;
         }
@@ -225,7 +225,7 @@ export default function AdminPanel() {
                     value={localData.hero.videoUrl} 
                     onUpload={(e) => handleImageUpload(e, 'hero.videoUrl')} 
                     onRemove={() => updateNestedData('hero.videoUrl', '')}
-                    helpText="Format: 1920x1080 | Duration: 8s max | Size: 4MB max"
+                    helpText="Format: 1920x1080 max | Duration: 8s max | Size: 4MB max"
                   />
                   <MediaUpload 
                     label="Fallback Image" 
@@ -244,7 +244,7 @@ export default function AdminPanel() {
                   value={localData.about.videoUrl} 
                   onUpload={(e) => handleImageUpload(e, 'about.videoUrl')} 
                   onRemove={() => updateNestedData('about.videoUrl', '')}
-                  helpText="Format: 1920x1080 | Duration: 8s max | Size: 4MB max"
+                  helpText="Format: 1920x1080 max | Duration: 8s max | Size: 4MB max"
                 />
               </Section>
 
