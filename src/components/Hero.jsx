@@ -37,7 +37,7 @@ export default function Hero({ data }) {
   return (
     <section 
       ref={containerRef}
-      className="relative h-[100dvh] w-full overflow-hidden flex items-end pb-24 px-6 md:px-12"
+      className="relative h-[100dvh] w-full overflow-hidden flex items-center md:items-end justify-center md:justify-start pb-12 md:pb-24 px-6 md:px-12"
     >
       {/* Background Media */}
       <div className="absolute inset-0 z-0">
@@ -58,20 +58,21 @@ export default function Hero({ data }) {
           />
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/40 to-transparent mix-blend-multiply opacity-80" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent hidden md:block" />
+        <div className="absolute inset-0 bg-black/40 md:hidden" />
       </div>
 
-      <div className="relative z-10 w-full max-w-7xl">
+      <div className="relative z-10 w-full max-w-7xl text-center md:text-left">
         <div className="flex flex-col gap-2">
           <h1 
             ref={titleRef}
-            className="text-white text-4xl md:text-7xl lg:text-8xl font-sans-condensed font-bold uppercase leading-none tracking-tighter"
+            className="text-white text-5xl md:text-7xl lg:text-8xl font-sans-condensed font-bold uppercase leading-none tracking-tighter"
           >
             {data.title || "Built to last."}
           </h1>
           <h2 
             ref={subtitleRef}
-            className="text-accent text-5xl md:text-8xl lg:text-9xl font-serif italic font-light leading-none -mt-1 md:-mt-4"
+            className="text-accent text-6xl md:text-8xl lg:text-9xl font-serif italic font-light leading-none -mt-1 md:-mt-4"
           >
             {data.italic || "Powered by nature"}
           </h2>
