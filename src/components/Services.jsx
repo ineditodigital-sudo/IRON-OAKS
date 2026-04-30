@@ -89,7 +89,7 @@ export default function Services({ data }) {
               {/* Card Content */}
               <div className="relative h-full flex flex-col justify-end p-8 md:p-10">
                 <div className="mb-6">
-                  <span className="inline-block bg-accent/20 backdrop-blur-md border border-accent/30 px-3 py-1.5 text-accent text-[9px] md:text-[10px] font-bold tracking-[0.3em] uppercase mb-6 transform transition-all duration-500 group-hover:translate-x-2">
+                  <span className="inline-block bg-accent/20 backdrop-blur-md border border-accent/30 px-3 py-1.5 text-white text-[9px] md:text-[10px] font-bold tracking-[0.3em] uppercase mb-6 transform transition-all duration-500 group-hover:translate-x-2">
                     {service.tag.includes(' / ') ? service.tag.split(' / ')[1] : service.tag}
                   </span>
                   <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 leading-tight uppercase font-sans-condensed">
