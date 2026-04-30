@@ -63,7 +63,7 @@ export default function Services({ data }) {
   };
 
   return (
-    <section id="services" ref={containerRef} className="bg-bg text-primary pt-16 pb-12 overflow-hidden">
+    <section id="services" ref={containerRef} className="bg-bg text-primary pt-16 pb-12 overflow-hidden scroll-mt-32">
       <div className="container mx-auto px-6 md:px-12">
         {/* Introduction Header */}
         <div className="services-header flex flex-col md:flex-row justify-between items-end mb-10 gap-8">

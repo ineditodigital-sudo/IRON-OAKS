@@ -245,7 +245,7 @@ export default function SolarCalculator() {
   return (
     <>
       {/* Entry Section */}
-      <section id="calculator" className="relative py-24 px-6 bg-dark overflow-hidden border-t border-white/5">
+      <section id="calculator" className="relative py-24 px-6 bg-dark overflow-hidden border-t border-white/5 scroll-mt-32">
         <div className="absolute inset-0 z-0">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-accent/10 rounded-full blur-[160px]" />
         </div>

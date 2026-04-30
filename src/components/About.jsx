@@ -62,7 +62,7 @@ export default function About({ data }) {
     <section 
       ref={containerRef}
       id="about"
-      className="relative min-h-[90vh] bg-bg overflow-hidden py-20 px-6 md:px-12 flex flex-col justify-center"
+      className="relative min-h-[90vh] bg-bg overflow-hidden py-20 px-6 md:px-12 flex flex-col justify-center scroll-mt-32"
     >
       {/* Background Video with Overlay */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">

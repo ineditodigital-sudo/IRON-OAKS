@@ -27,7 +27,7 @@ export default function BlogSection({ blogs, onReadMore }) {
   if (!blogs || blogs.length === 0) return null;
 
   return (
-    <section id="blog" className="py-10 px-6 bg-white relative overflow-hidden">
+    <section id="blog" className="py-10 px-6 bg-white relative overflow-hidden scroll-mt-32">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4">
           <div className="max-w-xl">
