@@ -23,6 +23,7 @@ export default function Footer({ data, onPrivacyClick, onTermsClick, onCancellat
                 <a href="#services" className="text-white/60 hover:text-white transition-colors text-xs md:text-base">Services</a>
                 <a href="#calculator" className="text-white/60 hover:text-white transition-colors text-xs md:text-base">Calculator</a>
                 <a href="#about" className="text-white/60 hover:text-white transition-colors text-xs md:text-base">About</a>
+                <a href="#blog" className="text-white/60 hover:text-white transition-colors text-xs md:text-base">Blog</a>
               </div>
             </div>
             
