@@ -74,7 +74,20 @@ function MainSite() {
         <meta property="og:title" content={content.seo.title} />
         <meta property="og:description" content={content.seo.description} />
         <meta property="og:image" content={content.seo.ogImage} />
+        {content.seo.trackingTags && (
+          <script type="text/javascript">
+            {`/* Tracking Tags Added via CMS */`}
+          </script>
+        )}
       </Helmet>
+
+      {/* Dynamic Tracking Scripts Injection */}
+      {content.seo.trackingTags && (
+        <div 
+          dangerouslySetInnerHTML={{ __html: content.seo.trackingTags }} 
+          style={{ display: 'none' }} 
+        />
+      )}
 
       <Navbar />
       <Hero data={content.hero} />

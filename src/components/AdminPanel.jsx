@@ -374,6 +374,14 @@ export default function AdminPanel() {
                     value={localData.seo.description} 
                     onChange={(v) => updateNestedData('seo.description', v)} 
                   />
+                  <TextArea 
+                    label="Tracking Tags / Analytics Scripts (Head)" 
+                    value={localData.seo.trackingTags || ''} 
+                    onChange={(v) => updateNestedData('seo.trackingTags', v)} 
+                  />
+                  <p className="text-[10px] text-white/20 uppercase tracking-widest mt-[-1rem] ml-1">
+                    Paste your Google Analytics, Facebook Pixel, or other tracking scripts here. They will be added to the head of the page.
+                  </p>
                   <Input 
                     label="Keywords (Comma separated)" 
                     value={localData.seo.keywords} 
