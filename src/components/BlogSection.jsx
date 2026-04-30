@@ -61,7 +61,8 @@ export default function BlogSection({ blogs, onReadMore }) {
           {blogs.map((blog) => (
             <article 
               key={blog.id} 
-              className="min-w-[260px] md:min-w-[320px] max-w-[400px] bg-bg/30 rounded-[1.5rem] overflow-hidden group snap-start border border-dark/5 flex flex-col"
+              onClick={() => onReadMore(blog)}
+              className="min-w-[260px] md:min-w-[320px] max-w-[400px] bg-bg/30 rounded-[1.5rem] overflow-hidden group snap-start border border-dark/5 flex flex-col cursor-pointer hover:shadow-xl hover:shadow-accent/5 transition-all duration-300"
             >
               <div className="aspect-[21/9] overflow-hidden relative shrink-0">
                 <img 
@@ -89,13 +90,10 @@ export default function BlogSection({ blogs, onReadMore }) {
                   </p>
                 </div>
                 
-                <button 
-                  onClick={() => onReadMore(blog)}
-                  className="mt-2 flex items-center gap-2 text-[8px] font-bold uppercase tracking-widest text-accent group-hover:gap-4 transition-all"
-                >
+                <div className="mt-2 flex items-center gap-2 text-[8px] font-bold uppercase tracking-widest text-accent group-hover:gap-4 transition-all">
                   Read Full Article
                   <ArrowRight size={10} />
-                </button>
+                </div>
               </div>
             </article>
           ))}
