@@ -617,9 +617,12 @@ function MediaUpload({ label, icon: Icon, value, onUpload, onRemove, helpText })
         />
       </div>
       {helpText && (
-        <p className="text-[9px] text-white/20 uppercase tracking-widest leading-relaxed ml-1">
-          {helpText}
-        </p>
+        <div className="flex items-center gap-2 mt-2 ml-1">
+          <div className="w-1 h-4 bg-accent/40 rounded-full" />
+          <p className="text-[10px] text-accent font-bold uppercase tracking-widest leading-none">
+            {helpText}
+          </p>
+        </div>
       )}
     </div>
   );
