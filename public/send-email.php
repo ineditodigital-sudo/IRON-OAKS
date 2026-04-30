@@ -109,11 +109,85 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $headers .= "Content-type:text/html;charset=UTF-8" . "\r\n";
         $headers .= "From: IronOak Website <noreply@ironoakpower.com>" . "\r\n";
 
-        if (mail($to, $subject, $message, $headers)) {
-            echo json_encode(["status" => "success", "message" => "Email sent successfully"]);
+        $mail_sent = mail($to, $subject, $message, $headers);
+
+        // --- SECOND EMAIL: Confirmation to the User ---
+        if ($mail_sent) {
+            $user_subject = "Your Solar Potential Analysis - IronOak Power";
+            $user_message = "
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+                <style>
+                    body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; line-height: 1.6; color: #1a2b3c; margin: 0; padding: 0; background-color: #f4f7f9; }
+                    .container { max-width: 600px; margin: 40px auto; background: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #e1e8ed; }
+                    .header { background-color: #ffffff; padding: 40px 20px; text-align: center; border-bottom: 1px solid #f0f0f0; }
+                    .logo { max-width: 180px; height: auto; }
+                    .content { padding: 40px; }
+                    .title { font-size: 22px; font-weight: bold; color: #1a2b3c; margin-bottom: 15px; text-align: center; text-transform: uppercase; letter-spacing: 1px; }
+                    .subtitle { font-size: 16px; color: #94a3b8; text-align: center; margin-bottom: 30px; }
+                    .results-box { background-color: #f8fafc; border-radius: 8px; padding: 25px; border-left: 4px solid #89ae83; margin-top: 20px; }
+                    .results-title { font-size: 12px; font-weight: bold; color: #89ae83; text-transform: uppercase; margin-bottom: 20px; letter-spacing: 1px; }
+                    .info-row { margin-bottom: 20px; font-size: 14px; }
+                    .info-label { font-weight: bold; color: #89ae83; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
+                    .info-value { color: #1a2b3c; font-size: 16px; display: block; }
+                    .next-steps { margin-top: 30px; font-size: 14px; color: #4b5563; }
+                    .footer { background-color: #ffffff; padding: 30px 20px; text-align: center; border-top: 1px solid #f0f0f0; }
+                    .footer-logo { max-width: 100px; opacity: 0.5; margin-bottom: 15px; }
+                    .copyright { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+                    
+                    @media only screen and (max-width: 600px) {
+                        .container { margin: 0 auto !important; width: 100% !important; border-radius: 0 !important; border: none !important; }
+                        .content { padding: 30px 20px !important; }
+                    }
+                </style>
+            </head>
+            <body>
+                <div class='container'>
+                    <div class='header'>
+                        <img src='https://imagenes.inedito.digital/IRONOAK%20POWER/LOGO-IRONOAK-AZUL.svg' alt='IronOak Power' class='logo'>
+                    </div>
+                    <div class='content'>
+                        <div class='title'>Hello {$name},</div>
+                        <div class='subtitle'>Thank you for using our Solar Savings Calculator. Here are your estimated results:</div>
+                        
+                        <div class='results-box'>
+                            <div class='results-title'>Your Energy Summary</div>
+                            <div class='info-row'>
+                                <span class='info-label'>Estimated System Cost:</span>
+                                <span class='info-value'>{$cost}</span>
+                            </div>
+                            <div class='info-row'>
+                                <span class='info-label'>Annual Savings Potential:</span>
+                                <span class='info-value' style='color: #89ae83; font-weight: bold;'>{$annual}</span>
+                            </div>
+                            <div class='info-row'>
+                                <span class='info-label'>30-Year Lifetime Savings:</span>
+                                <span class='info-value' style='color: #89ae83; font-weight: bold;'>{$lifetime}</span>
+                            </div>
+                        </div>
+
+                        <div class='next-steps'>
+                            <p><strong>Next Steps:</strong> Our expert team has received your request and will be reaching out shortly to discuss a more precise, customized plan for your property.</p>
+                            <p>We look forward to helping you achieve energy independence.</p>
+                        </div>
+                    </div>
+                    <div class='footer'>
+                        <img src='https://imagenes.inedito.digital/IRONOAK%20POWER/LOGO-IRONOAK-AZUL.svg' alt='IronOak Power' class='footer-logo'>
+                        <div class='copyright'>© " . date("Y") . " IronOak Power. All rights reserved.</div>
+                    </div>
+                </div>
+            </body>
+            </html>
+            ";
+
+            mail($email, $user_subject, $user_message, $headers);
+            
+            echo json_encode(["status" => "success", "message" => "Emails sent successfully"]);
         } else {
             http_response_code(500);
-            echo json_encode(["status" => "error", "message" => "Failed to send email"]);
+            echo json_encode(["status" => "error", "message" => "Failed to send email to company"]);
         }
     } else {
         http_response_code(400);

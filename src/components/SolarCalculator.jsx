@@ -385,7 +385,7 @@ export default function SolarCalculator() {
                     Request <span className="text-accent">Sent</span>
                   </h2>
                   <p className="text-white/60 text-lg md:text-xl mb-12 max-w-2xl font-normal">
-                    Your consultation request has been sent successfully. Our team will contact you soon to discuss your solar potential.
+                    Your consultation request has been sent successfully. We've sent a summary of your results to <strong>{formData.email}</strong>. Our team will contact you soon.
                   </p>
                   <div className="flex justify-center">
                     <button 
