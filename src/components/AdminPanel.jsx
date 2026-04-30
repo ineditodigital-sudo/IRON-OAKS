@@ -19,7 +19,7 @@ import {
 } from 'lucide-react';
 
 const getImageUrl = (url) => {
-  if (!url) return '';
+  if (!url || typeof url !== 'string') return '';
   if (url.startsWith('http') || url.startsWith('data:') || url.startsWith('/')) return url;
   if (url.includes('uploads/')) return '/' + url.replace(/^\/+/, '');
   return url;
@@ -30,15 +30,32 @@ export default function AdminPanel() {
   const [activeTab, setActiveTab] = useState('general');
   const [localData, setLocalData] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
   const token = localStorage.getItem('adminToken');
 
   useEffect(() => {
-    if (!token) navigate('/admin');
-    if (content) setLocalData(JSON.parse(JSON.stringify(content)));
+    if (!token) {
+      navigate('/admin');
+      return;
+    }
+    if (content) {
+      try {
+        setLocalData(JSON.parse(JSON.stringify(content)));
+      } catch (e) {
+        console.error("Error parsing content:", e);
+      }
+    }
   }, [content, token, navigate]);
 
-  if (loading || !localData) return <div className="min-h-screen bg-dark flex items-center justify-center text-accent font-bold uppercase tracking-widest">Loading Dashboard...</div>;
+  if (loading || !localData) {
+    return (
+      <div className="min-h-screen bg-[#111] flex flex-col items-center justify-center text-accent font-bold uppercase tracking-[0.3em] gap-6">
+        <div className="w-12 h-12 border-2 border-accent border-t-transparent rounded-full animate-spin" />
+        <span className="animate-pulse">Loading Dashboard...</span>
+      </div>
+    );
+  }
 
   const handleSave = async () => {
     setIsSaving(true);
@@ -62,6 +79,7 @@ export default function AdminPanel() {
     const keys = path.split('.');
     let current = newData;
     for (let i = 0; i < keys.length - 1; i++) {
+      if (!current[keys[i]]) current[keys[i]] = {};
       current = current[keys[i]];
     }
     current[keys[keys.length - 1]] = value;
@@ -72,25 +90,22 @@ export default function AdminPanel() {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Video validation
-    if (file.type.startsWith('video/')) {
-      // Size check (4MB)
-      if (file.size > 4 * 1024 * 1024) {
-        alert('❌ Error: El video no debe superar los 4MB.');
-        e.target.value = '';
-        return;
-      }
+    if (file.size > 4 * 1024 * 1024) {
+      alert('❌ Error: El peso máximo permitido es de 4MB.');
+      e.target.value = '';
+      return;
+    }
 
-      // Create video element to check duration and resolution
+    if (file.type.startsWith('video/')) {
       const video = document.createElement('video');
       video.preload = 'metadata';
-      video.onloadedmetadata = function() {
+      video.onloadedmetadata = () => {
         window.URL.revokeObjectURL(video.src);
         const duration = video.duration;
         const width = video.videoWidth;
         const height = video.videoHeight;
 
-        if (duration > 8.5) { // 8s with small margin
+        if (duration > 8.5) {
           alert('❌ Error: La duración máxima permitida es de 8 segundos.');
           e.target.value = '';
           return;
@@ -102,12 +117,10 @@ export default function AdminPanel() {
           return;
         }
 
-        // If valid, proceed with upload
         performUpload(file, path);
       };
       video.src = URL.createObjectURL(file);
     } else {
-      // For images, proceed normally
       performUpload(file, path);
     }
   };
@@ -141,10 +154,8 @@ export default function AdminPanel() {
     { id: 'seo', name: 'SEO Settings', icon: Search }
   ];
 
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
   return (
-    <div className="min-h-screen bg-[#111] text-white flex flex-col md:flex-row relative">
+    <div className="min-h-screen bg-[#111] text-white flex flex-col md:flex-row relative selection:bg-accent/30 selection:text-white">
       {/* Sidebar Toggle (Mobile) */}
       <button 
         onClick={() => setIsSidebarOpen(!isSidebarOpen)}
@@ -237,7 +248,7 @@ export default function AdminPanel() {
       )}
 
       {/* Main Content */}
-      <main className={`flex-1 p-6 md:p-12 transition-all duration-500 ${!isSidebarOpen && 'md:pl-6'}`}>
+      <main className={`flex-1 p-6 md:p-12 transition-all duration-500 ${!isSidebarOpen ? 'md:pl-6' : ''}`}>
         <header className="mb-12 flex justify-between items-end">
           <div>
             <h1 className="text-4xl font-bold uppercase font-sans-condensed tracking-tight">
@@ -250,22 +261,13 @@ export default function AdminPanel() {
           </div>
         </header>
 
-        {/* Tab Content */}
-        <div className="max-w-4xl space-y-12">
+        <div className="space-y-12">
           {activeTab === 'general' && (
-            <div className="space-y-10">
-              <Section title="Hero Section Text">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <Input label="Title Prefix" value={localData.hero.title} onChange={(v) => updateNestedData('hero.title', v)} />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+              <Section title="Hero Section">
+                <div className="space-y-6">
+                  <Input label="Main Title" value={localData.hero.title} onChange={(v) => updateNestedData('hero.title', v)} />
                   <Input label="Italic Text" value={localData.hero.italic} onChange={(v) => updateNestedData('hero.italic', v)} />
-                  <div className="md:col-span-2">
-                    <TextArea label="Hero Description" value={localData.hero.description} onChange={(v) => updateNestedData('hero.description', v)} />
-                  </div>
-                </div>
-              </Section>
-
-              <Section title="Hero Media">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   <MediaUpload 
                     label="Background Video" 
                     icon={Video} 
@@ -284,17 +286,6 @@ export default function AdminPanel() {
                 </div>
               </Section>
 
-              <Section title="About Section Media">
-                <MediaUpload 
-                  label="About Video" 
-                  icon={Video} 
-                  value={localData.about.videoUrl} 
-                  onUpload={(e) => handleImageUpload(e, 'about.videoUrl')} 
-                  onRemove={() => updateNestedData('about.videoUrl', '')}
-                  helpText="Format: 1920x1080 max | Duration: 8s max | Size: 4MB max"
-                />
-              </Section>
-
               <Section title="Footer Content">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Input label="Footer Title" value={localData.footer.title} onChange={(v) => updateNestedData('footer.title', v)} />
@@ -311,7 +302,7 @@ export default function AdminPanel() {
           {activeTab === 'services' && (
             <div className="space-y-8">
               {localData.services.map((service, index) => (
-                <Section key={service.id} title={`Service Card ${index + 1}`}>
+                <Section key={service.id || index} title={`Service Card ${index + 1}`}>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Input label="Tag" value={service.tag} onChange={(v) => {
                       const newServices = [...localData.services];
@@ -352,7 +343,7 @@ export default function AdminPanel() {
                 <button 
                   onClick={() => {
                     const newBlog = { id: Date.now(), title: 'New Post', excerpt: 'Draft excerpt', image: '', date: new Date().toISOString().split('T')[0] };
-                    setLocalData({ ...localData, blogs: [newBlog, ...localData.blogs] });
+                    setLocalData({ ...localData, blogs: [newBlog, ...(localData.blogs || [])] });
                   }}
                   className="bg-accent text-primary p-4 rounded-2xl flex items-center gap-2 hover:scale-105 transition-all shadow-lg shadow-accent/20"
                 >
@@ -362,12 +353,12 @@ export default function AdminPanel() {
               </div>
 
               <div className="grid grid-cols-1 gap-4">
-                {localData.blogs.map((blog, index) => (
+                {(localData.blogs || []).map((blog, index) => (
                   <div key={blog.id} className="bg-[#1A1A1A] rounded-[2rem] p-6 flex flex-col md:flex-row gap-6 items-start group relative border border-white/5 shadow-xl">
                     <div className="w-full md:w-32 h-32 rounded-2xl bg-black/40 overflow-hidden relative shrink-0">
                       {blog.image ? (
                         <>
-                          <img src={getImageUrl(blog.image)} className="w-full h-full object-cover opacity-80" />
+                          <img src={getImageUrl(blog.image)} className="w-full h-full object-cover opacity-80" alt="Blog" />
                           <button 
                             onClick={(e) => {
                               e.preventDefault();
@@ -469,9 +460,6 @@ export default function AdminPanel() {
                     value={localData.seo.trackingTags || ''} 
                     onChange={(v) => updateNestedData('seo.trackingTags', v)} 
                   />
-                  <p className="text-[10px] text-white/20 uppercase tracking-widest mt-[-1rem] ml-1">
-                    Paste your Google Analytics, Facebook Pixel, or other tracking scripts here. They will be added to the head of the page.
-                  </p>
                   <Input 
                     label="Keywords (Comma separated)" 
                     value={localData.seo.keywords} 
@@ -486,21 +474,6 @@ export default function AdminPanel() {
                   />
                 </div>
               </Section>
-              
-              <div className="p-6 rounded-[2rem] bg-accent/5 border border-accent/20">
-                <h4 className="text-accent font-bold uppercase tracking-widest text-[10px] mb-4">Google Search Preview</h4>
-                <div className="bg-white rounded-lg p-6 space-y-1">
-                  <div className="text-[14px] text-[#202124] flex items-center gap-1">
-                    https://ironoakpower.com <ChevronRight size={10} className="text-[#70757a]" />
-                  </div>
-                  <div className="text-[20px] text-[#1a0dab] font-medium hover:underline cursor-pointer leading-tight">
-                    {localData.seo.title}
-                  </div>
-                  <div className="text-[14px] text-[#4d5156] leading-snug line-clamp-2">
-                    {localData.seo.description}
-                  </div>
-                </div>
-              </div>
             </div>
           )}
         </div>
@@ -509,7 +482,6 @@ export default function AdminPanel() {
   );
 }
 
-// Sub-components
 function Section({ title, children }) {
   return (
     <div className="space-y-6">
@@ -528,7 +500,7 @@ function Input({ label, value, onChange }) {
     <div className="space-y-2">
       <label className="text-white/30 text-[10px] uppercase tracking-widest font-bold ml-1">{label}</label>
       <input 
-        value={value} 
+        value={value || ''} 
         onChange={(e) => onChange(e.target.value)}
         className="w-full bg-black/40 border border-white/10 rounded-2xl py-4 px-6 text-white outline-none focus:border-accent transition-all text-sm placeholder:text-white/20"
       />
@@ -541,7 +513,7 @@ function TextArea({ label, value, onChange }) {
     <div className="space-y-2">
       <label className="text-white/30 text-[10px] uppercase tracking-widest font-bold ml-1">{label}</label>
       <textarea 
-        value={value} 
+        value={value || ''} 
         onChange={(e) => onChange(e.target.value)}
         className="w-full bg-black/40 border border-white/10 rounded-2xl py-4 px-6 text-white outline-none focus:border-accent transition-all text-sm min-h-[120px] placeholder:text-white/20"
       />
@@ -550,7 +522,7 @@ function TextArea({ label, value, onChange }) {
 }
 
 function MediaUpload({ label, icon: Icon, value, onUpload, onRemove, helpText }) {
-  const isVideo = value && (
+  const isVideo = value && typeof value === 'string' && (
     value.toLowerCase().endsWith('.mp4') || 
     value.toLowerCase().endsWith('.webm') || 
     value.toLowerCase().endsWith('.mov') ||
